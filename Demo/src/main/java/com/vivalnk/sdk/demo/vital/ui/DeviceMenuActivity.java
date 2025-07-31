@@ -118,16 +118,22 @@ public class DeviceMenuActivity extends ConnectedActivity {
   private Runnable mqttTimeoutRunnable;
 
   // Questionnaire
-  
-  private  boolean R1 =  false;
-  //  12. Respuesta pregunta 1
-  String cansado = " ";
-  //  13. Respuesta pregunta 2
-  int slider = 0;
-  //  14. Respuesta pregunta 3
-  String nivel = " ";
-  //  15. Respuesta pregunta 4
-  String estado = " ";
+
+  //  Respuestas
+  String nombre = " ";
+  String res1 = " ";
+  String res2 = " ";
+  String res3 = " ";
+  String res4 = " ";
+  String res5 = " ";
+  String res6 = " ";
+  String res7 = " ";
+  String res8 = " ";
+  String res9 = " ";
+  String res10 = " ";
+
+  String puntajeJuego = "";
+
 
 
   private void restartMqttTimeoutTimer() {
@@ -206,10 +212,20 @@ private void sendMQTTMessage(SampleData data){
         if (isActivity == null) isActivity = false;
         if (batteryLevel == null) batteryLevel = -1;
         // ECG
-        if (cansado == null) cansado = "N/A";
-        if (slider < 0) slider = -1;
-        if (nivel == null) nivel = "N/A";
-        if (estado == null) estado = "N/A";
+        if (nombre == null) nombre = "N/A";
+        if (res1 == null) res1 = "N/A";
+        if (res2 == null) res2 = "N/A";
+        if (res3 == null) res3 = "N/A";
+        if (res4 == null) res4 = "N/A";
+        if (res5 == null) res5 = "N/A";
+        if (res6 == null) res6 = "N/A";
+        if (res7 == null) res7 = "N/A";
+        if (res8 == null) res8 = "N/A";
+        if (res9 == null) res9 = "N/A";
+        if (res10 == null) res10 = "N/A";
+        if (puntajeJuego == null) puntajeJuego = "N/A";
+
+
         String payload = "{"
                 + "\"TimeStamp\":" + timestamp
                 + ",\"DeviceID\":\"" + deviceID + "\""
@@ -223,10 +239,18 @@ private void sendMQTTMessage(SampleData data){
                 + ",\"isActivity\":" + isActivity
                 + ",\"BatteryPercentage\":" + batteryLevel
                 + ",\"ECG\":" + ecgArray.toString()
-                + ",\"R1\":\"" + cansado + "\""
-                + ",\"R2\":"+ slider
-                + ",\"R3\":\""+ nivel + "\""
-                + ",\"R4\":\""+ estado + "\""
+                + ",\"Nombre\":\"" + nombre + "\""
+                + ",\"R1\":\""+ res1 + "\""
+                + ",\"R2\":\""+ res2 + "\""
+                + ",\"R3\":\""+ res3 + "\""
+                + ",\"R4\":\""+ res4 + "\""
+                + ",\"R5\":\""+ res5 + "\""
+                + ",\"R6\":\""+ res6 + "\""
+                + ",\"R7\":\""+ res7 + "\""
+                + ",\"R8\":\""+ res8 + "\""
+                + ",\"R9\":\""+ res9 + "\""
+                + ",\"R10\":\""+ res10 + "\""
+                + ",\"PuntajeJuego\":\""+ puntajeJuego +"\""
                 + "}";
 
         MqttMessage message = new MqttMessage(payload.getBytes());
@@ -626,13 +650,11 @@ private void solicitarExclusionBateria() {
       }
     });
     */
-      R1 = false;
   }
 
   @OnClick(R.id.btnSetPatchClock)
   public void clickSetPatchClock(Button view) {
     //execute(CommandType.setPatchClock);
-      R1 = true;
   }
 
   @OnClick(R.id.btnReadUserInfo)
@@ -811,10 +833,19 @@ private void solicitarExclusionBateria() {
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == 101 && resultCode == RESULT_OK) {
-        cansado = data.getStringExtra("respuestaCansado");
-        slider = data.getIntExtra("respuestaSlider", 0);
-        nivel = data.getStringExtra("respuestaNivel");
-        estado = data.getStringExtra("respuestaTexto");
+        nombre = data.getStringExtra("Nombre");
+        res1 = data.getStringExtra("respuesta1");
+        res2 = data.getStringExtra("respuesta2");
+        res3 = data.getStringExtra("respuesta3");
+        res4 = data.getStringExtra("respuesta4");
+        res5 = data.getStringExtra("respuesta5");
+        res6 = data.getStringExtra("respuesta6");
+        res7 = data.getStringExtra("respuesta7");
+        res8 = data.getStringExtra("respuesta8");
+        res9 = data.getStringExtra("respuesta9");
+        res10 = data.getStringExtra("respuesta10");
+        puntajeJuego = data.getStringExtra("puntajeJuego");
+        //estado = data.getStringExtra("respuestaTexto");
     }
     /*if (requestCode == ACTIVITY_CHOOSE_FILE) {
       if (resultCode != RESULT_OK || data == null) {

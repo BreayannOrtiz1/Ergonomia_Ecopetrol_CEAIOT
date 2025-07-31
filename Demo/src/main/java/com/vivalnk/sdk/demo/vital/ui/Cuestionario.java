@@ -7,70 +7,78 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
-import android.widget.TextView;
+
 
 import com.vivalnk.sdk.demo.vital.R;
 
 public class Cuestionario extends Activity {
-    RadioGroup rgCansado, rgNivelCansancio;
-    SeekBar seekCansancio;
-    TextView tvSeekValor;
-    EditText etEstadoAnimo;
-    EditText etNombre;
+    RadioGroup rgNivelResp1, rgNivelResp2, rgNivelResp3, rgNivelResp4, rgNivelResp5, rgNivelResp6, rgNivelResp7, rgNivelResp8, rgNivelResp9, rgNivelResp10;
+    EditText etNombre, etResultPCognitiva;
     Button btnGuardar;
+
+    private String getRadioCroupValue(RadioGroup group){
+        int groupId = group.getCheckedRadioButtonId();
+        if (groupId != -1) {
+            RadioButton rb = findViewById(groupId);
+            return rb.getText().toString();
+        }
+        return "";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cuestionario_activity); // conecta con el XML
 
-        rgCansado = findViewById(R.id.rgCansado);
-        rgNivelCansancio = findViewById(R.id.rgNivelCansancio);
-        seekCansancio = findViewById(R.id.seekCansancio);
-        tvSeekValor = findViewById(R.id.tvSeekCansancioValor);
-        etEstadoAnimo = findViewById(R.id.etEstadoAnimo);
-        etNombre =      findViewById(R.id.etNombre);
+        etNombre    =  findViewById(R.id.etNombre);
+        rgNivelResp1 = findViewById(R.id.rgNivelResp1);
+        rgNivelResp2 = findViewById(R.id.rgNivelResp2);
+        rgNivelResp3 = findViewById(R.id.rgNivelResp3);
+        rgNivelResp4 = findViewById(R.id.rgNivelResp4);
+        rgNivelResp5 = findViewById(R.id.rgNivelResp5);
+        rgNivelResp6 = findViewById(R.id.rgNivelResp6);
+        rgNivelResp7 = findViewById(R.id.rgNivelResp7);
+        rgNivelResp8 = findViewById(R.id.rgNivelResp8);
+        rgNivelResp9 = findViewById(R.id.rgNivelResp9);
+        rgNivelResp10 = findViewById(R.id.rgNivelResp10);
+        etResultPCognitiva = findViewById(R.id.etResultPCognitiva);
+
         btnGuardar = findViewById(R.id.btnGuardarCuestionario);
 
-        // Mostrar el valor en texto cuando se mueve el slider
-        seekCansancio.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvSeekValor.setText("Valor: " + (progress + 1));
-            }
-            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-
         // Cuando se presiona "Guardar"
-        String nombre = etNombre.getText().toString();
+
         btnGuardar.setOnClickListener(v -> {
-            // Pregunta 1: ¿Está cansado?
-            String cansado = "";
-            int idCansado = rgCansado.getCheckedRadioButtonId();
-            if (idCansado != -1) {
-                cansado = ((RadioButton)findViewById(idCansado)).getText().toString();
-            }
+            String nombre = etNombre.getText().toString();
 
-            // Pregunta 2: Slider
-            int nivelCansancioSlider = seekCansancio.getProgress() + 1;
+            String P1 = getRadioCroupValue(rgNivelResp1);
+            String P2 = getRadioCroupValue(rgNivelResp2);
+            String P3 = getRadioCroupValue(rgNivelResp3);
+            String P4 = getRadioCroupValue(rgNivelResp4);
+            String P5 = getRadioCroupValue(rgNivelResp5);
+            String P6 = getRadioCroupValue(rgNivelResp6);
+            String P7 = getRadioCroupValue(rgNivelResp7);
+            String P8 = getRadioCroupValue(rgNivelResp8);
+            String P9 = getRadioCroupValue(rgNivelResp9);
+            String P10 = getRadioCroupValue(rgNivelResp10);
 
-            // Pregunta 3: Radio 1-5
-            String nivelCansancio = "";
-            int idNivel = rgNivelCansancio.getCheckedRadioButtonId();
-            if (idNivel != -1) {
-                nivelCansancio = ((RadioButton)findViewById(idNivel)).getText().toString();
-            }
+            String PuntajeJuego = etResultPCognitiva.getText().toString();
 
-            // Pregunta 4: Texto
-            String estadoAnimo = etEstadoAnimo.getText().toString();
+
+
             // Enviar de vuelta los resultados a DeviceMenuActivity
             Intent resultIntent = new Intent();
             resultIntent.putExtra("Nombre", nombre);
-            resultIntent.putExtra("respuestaCansado", cansado);
-            resultIntent.putExtra("respuestaSlider", nivelCansancioSlider);
-            resultIntent.putExtra("respuestaNivel", nivelCansancio);
-            resultIntent.putExtra("respuestaTexto", estadoAnimo);
+            resultIntent.putExtra("respuesta1", P1);
+            resultIntent.putExtra("respuesta2", P2);
+            resultIntent.putExtra("respuesta3", P3);
+            resultIntent.putExtra("respuesta4", P4);
+            resultIntent.putExtra("respuesta5", P5);
+            resultIntent.putExtra("respuesta6", P6);
+            resultIntent.putExtra("respuesta7", P7);
+            resultIntent.putExtra("respuesta8", P8);
+            resultIntent.putExtra("respuesta9", P9);
+            resultIntent.putExtra("respuesta10", P10);
+            resultIntent.putExtra("puntajeJuego", PuntajeJuego);
             setResult(Activity.RESULT_OK, resultIntent);
             finish(); // Cierra esta pantalla
         });

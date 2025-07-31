@@ -11,7 +11,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="PIPER FATIGUE SCALE"
+            android:layout_gravity="center"
+            android:textSize="22sp"
+            android:layout_margin="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Instrucciones: Puntúe cada afirmación de 0 (Nada) a 10 (Extremadamente)"
+            android:textSize="14sp"
+            android:textStyle="italic" />
         <EditText
             android:id="@+id/etNombre"
             android:layout_width="match_parent"
@@ -19,85 +34,367 @@
             android:hint="Nombre (opcional)"
             android:inputType="textCapSentences"
             android:layout_marginBottom="8dp"
+            android:textSize="14sp"
             android:maxLines="3" />
 
-        <!-- Aquí irán las preguntas. Puedo ayudarte a pegarlas a continuación -->
+        <!-- Aquí irán las preguntas.-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="¿Se siente cansado o fatigado?"
+            android:text="1. ¿Me siento exhausto/a mentalmente?"
             android:textSize="18sp"
-            android:textStyle="bold" />
-
+            android:textStyle="normal" />
         <RadioGroup
-            android:id="@+id/rgCansado"
+            android:id="@+id/rgNivelResp1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="4dp">
-            <RadioButton android:id="@+id/rbCansadoSi" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Sí" />
-            <RadioButton android:id="@+id/rbCansadoNo" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="No" />
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp1Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp1Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp1Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp1Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp1Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp1Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp1Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp1Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp1Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp1Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
         </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="¿Qué tan cansado se siente de 1 a 10?"
+            android:text="2. ¿Me cuesta concentrarme en tareas?"
             android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <SeekBar
-            android:id="@+id/seekCansancio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:max="9"
-            app:tickMarkTint="#0388F4" />
-
-        <TextView
-            android:id="@+id/tvSeekCansancioValor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Valor: 1"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="¿De 1 a 5 qué tan cansado se siente ahora mismo?"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginTop="12dp" />
-
+            android:textStyle="normal" />
         <RadioGroup
-            android:id="@+id/rgNivelCansancio"
+            android:id="@+id/rgNivelResp2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="4dp">
-            <RadioButton android:id="@+id/rbNivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1"/>
-            <RadioButton android:id="@+id/rbNivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2"/>
-            <RadioButton android:id="@+id/rbNivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3"/>
-            <RadioButton android:id="@+id/rbNivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4"/>
-            <RadioButton android:id="@+id/rbNivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5"/>
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp2Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp2Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp2Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp2Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp2Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp2Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp2Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp2Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp2Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp2Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+        </RadioGroup>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="3. ¿Tengo ganas de dormir?"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+        <RadioGroup
+            android:id="@+id/rgNivelResp3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp3Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp3Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp3Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp3Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp3Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp3Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp3Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp3Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp3Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp3Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
         </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¿Cómo se siente en este momento?"
+            android:layout_marginTop="12dp"
+            android:text="4. ¿Me siento menos motivado/a?"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+
+        <RadioGroup
+            android:id="@+id/rgNivelResp4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp4Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp4Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp4Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp4Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp4Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp4Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp4Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp4Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp4Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp4Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="5. ¿Me siento lento/a para pensar?"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+        <RadioGroup
+            android:id="@+id/rgNivelResp5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp5Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp5Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp5Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp5Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp5Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp5Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp5Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp5Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp5Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp5Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+        </RadioGroup>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="6. ¿Me resulta difícil organizar ideas?"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+        <RadioGroup
+            android:id="@+id/rgNivelResp6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp6Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp6Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp6Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp6Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp6Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp6Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp6Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp6Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp6Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp6Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+        </RadioGroup>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="7. ¿Siento que mi productividad es baja?"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+        <RadioGroup
+            android:id="@+id/rgNivelResp7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp7Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp7Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp7Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp7Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp7Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp7Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp7Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp7Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp7Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp7Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+        </RadioGroup>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="8. ¿Me siento impaciente o irritable?"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+        <RadioGroup
+            android:id="@+id/rgNivelResp8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp8Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp8Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp8Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp8Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp8Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp8Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp8Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp8Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp8Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp8Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+        </RadioGroup>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="9. ¿Me cuesta seguir conversaciones largas?"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+        <RadioGroup
+            android:id="@+id/rgNivelResp9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp9Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp9Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp9Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp9Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp9Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp9Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp9Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp9Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp9Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp9Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+        </RadioGroup>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="10. ¿Siento que necesito un descanso prolongado?"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+        <RadioGroup
+            android:id="@+id/rgNivelResp10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+            <RadioButton android:id="@+id/rbResp10Nivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp10Nivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp10Nivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp10Nivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp10Nivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp10Nivel6" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="6" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp10Nivel7" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="7" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp10Nivel8" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="8" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp10Nivel9" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="9" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+            <RadioButton android:id="@+id/rbResp10Nivel10" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="10" android:button="@null"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle" android:gravity="center"/>
+        </RadioGroup>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingrese el puntaje de la prueba cognitiva"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="50dp" />
 
         <EditText
-            android:id="@+id/etEstadoAnimo"
+            android:id="@+id/etResultPCognitiva"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Describa su estado"
+            android:hint="El puntaje debe ser un número"
             android:inputType="textCapSentences"
             android:layout_marginBottom="8dp"
             android:maxLines="3" />
@@ -106,11 +403,11 @@
             android:id="@+id/btnGuardarCuestionario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar respuestas"
+            android:text="GUARDAR RESPUESTAS"
             android:textColor="@android:color/white"
             android:background="@android:color/holo_green_dark"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="25dp" />
 
     </LinearLayout>
 </ScrollView>
