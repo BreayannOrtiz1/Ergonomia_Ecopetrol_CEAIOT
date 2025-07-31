@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <include layout="@layout/toolbar"/>
+
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:orientation="vertical">
+    <TextView
+      style="@style/setttings_item_title"
+      android:layout_marginTop="24dp"
+      android:text="@string/check_text_title_ble"
+      android:textSize="18sp"/>
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="4dp"
+      android:background="@color/settingDeviderGrey"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+      android:id="@+id/checkboxBLESupport"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clickable="false"
+      android:text="@string/check_text_ble_support"/>
+    <androidx.appcompat.widget.AppCompatCheckBox
+      android:id="@+id/checkboxBluetoothEnable"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clickable="false"
+      android:text="@string/check_text_ble_enable"/>
+    <androidx.appcompat.widget.AppCompatCheckBox
+      android:id="@+id/checkboxLocationEnable"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clickable="false"
+      android:text="@string/check_text_location_enable"/>
+
+    <!-- permission -->
+    <TextView
+      style="@style/setttings_item_title"
+      android:layout_marginTop="24dp"
+      android:text="@string/check_text_title_permisstions"
+      android:textSize="18sp"/>
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="4dp"
+      android:background="@color/settingDeviderGrey"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+      android:id="@+id/checkboxBluetoothPersmission"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clickable="false"
+      android:text="@string/check_text_permission_ble"/>
+    <androidx.appcompat.widget.AppCompatCheckBox
+      android:id="@+id/checkboxLocationPersmission"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clickable="false"
+      android:text="@string/check_text_permission_location"/>
+
+  </LinearLayout>
+</LinearLayout>

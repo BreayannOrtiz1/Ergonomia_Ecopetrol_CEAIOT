@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string-array name="work_modes">
+    <item>ZERO_ECG&amp;ACC</item>
+    <item>ONE_RRI&amp;ACC </item>
+    <item>TWO_RRI&amp;ECG</item>
+    <item>THREE_RRI</item>
+  </string-array>
+
+  <string-array name="data_graphics">
+    <item>RTS Data</item>
+    <item>History Data</item>
+  </string-array>
+
+  <string-array name="log_details">
+    <item>Data Log</item>
+    <item>Operation Log</item>
+  </string-array>
+
+</resources>

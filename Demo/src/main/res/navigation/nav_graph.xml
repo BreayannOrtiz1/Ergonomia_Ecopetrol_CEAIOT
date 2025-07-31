@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/nav_graph"
+  app:startDestination="@id/ecgFragment">
+  <fragment
+    android:id="@+id/ecgFragment"
+    android:label="EcgFragment"
+    android:name="com.vivalnk.sdk.demo.vital.ui.fragment.EcgFragment">
+    <action
+      android:id="@+id/action_ecgFragment_to_accFragment"
+      app:destination="@id/accFragment"/>
+    <argument
+      android:name="device"
+      app:argType="com.vivalnk.sdk.model.Device"/>
+  </fragment>
+  <fragment
+    android:id="@+id/accFragment"
+    android:label="AccFragment"
+    android:name="com.vivalnk.sdk.demo.vital.ui.fragment.AccFragment">
+    <argument
+      android:name="device"
+      app:argType="com.vivalnk.sdk.model.Device"/>
+  </fragment>
+</navigation>

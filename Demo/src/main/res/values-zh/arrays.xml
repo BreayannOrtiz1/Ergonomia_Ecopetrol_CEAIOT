@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string-array name="data_graphics">
+    <item>实时数据</item>
+    <item>历史数据</item>
+  </string-array>
+
+  <string-array name="log_details">
+    <item>数据日志</item>
+    <item>操作日志</item>
+  </string-array>
+
+</resources>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">SDK-01_Demo</string>
+  <string name="graphics">心电图</string>
+  <string name="disconnect">断开连接</string>
+  <string name="samplerate_125">125Hz</string>
+  <string name="samplerate_250">250Hz</string>
+  <string name="clear">清空</string>
+  <string name="yes">是</string>
+  <string name="no">否</string>
+
+  <!--Action Bar menu items-->
+  <string name="action_switch_graphics">切换视图</string>
+
+  <string name="str_detail">日志详情</string>
+  <string name="str_mode_zero">ECG&#038;ACC</string>
+  <string name="str_mode_one">RRI&#038;ACC</string>
+  <string name="str_mode_two">RRI&#038;ECG</string>
+  <string name="str_mode_three">RRI</string>
+  <string name="str_start_sampling">开始采样</string>
+  <string name="str_stop_sampling">停止采样</string>
+  <string name="str_shut_down">关机</string>
+  <string name="str_switch_mode">切换模式</string>
+  <string name="str_selftest">自检</string>
+  <string name='str_not_selftest'>设置时钟</string>
+  <string name="str_upload_flash">上传历史数据</string>
+  <string name="str_cancel_flash">取消上传</string>
+  <string name="str_erase_flash">清空历史数据</string>
+  <string name="str_query_flash">查询历史数据</string>
+  <string name="str_read_version">读取设备版本</string>
+  <string name="str_read_device_info">读取设备信息</string>
+  <string name="str_check_patch_status">检查设备状态</string>
+  <string name="str_ota">固件升级</string>
+  <string name="str_set_info">设置信息</string>
+  <string name="str_read_info">读取信息</string>
+  <string name="str_erase_info">清空信息</string>
+  <string name="str_read_sninfo">读取SN</string>
+
+  <string name="title_activity_enter">EnterActivity</string>
+  <string name="navigation_drawer_open">Open Navigation Drawer</string>
+  <string name="navigation_drawer_close">Close Navigation Drawer</string>
+  <string name="nav_header_title">VivaLNK.Group</string>
+  <string name="nav_header_subtitle">Support@VivaLNK.com</string>
+  <string name="nav_header_desc">Navigation Header</string>
+  <string name="activity_graphic">Data Graphic</string>
+  <string name="activity_history">Data History</string>
+
+  <!--device info-->
+  <string name="open_engineer">打开工程模式</string>
+  <string name="title_activity_device">设备详情</string>
+  <string name="text_fw_version">固件版本: </string>
+  <string name="text_hw_version">硬件版本: </string>
+  <string name="text_device_info">设备信息: </string>
+  <string name="title_todo">请选择您的操作</string>
+  <string name="input_text_hint">请输入新用户信息</string>
+  <string name="input_text_empty">输入为空</string>
+  <string name="error_no_support_engineer_module">当前APP不支持工程模式</string>
+  <string name="send_command_success">%s 成功</string>
+  <string name="send_command_error">%s 异常</string>
+  <string name="info">信息</string>
+  <string name="patch_info_sampling">正在采集:%s</string>
+  <string name="patch_info_leadOn">佩戴:%s</string>
+  <string name="patch_info_sampleFrequency">采集频率:%s</string>
+  <string name="patch_info_baselinealgoopen">基线算法打开:%s</string>
+  <string name="patch_info_rtsdataopen">实时数据打开:%s</string>
+  <string name="battery_info_status">电池状态:%s</string>
+  <string name="battery_info_level">电池等级:%s</string>
+  <string name="battery_info_can_ota">能固件升级:%s</string>
+  <string name="battery_info_can_sampling">能采集:%s</string>
+  <string name="battery_info_can_ble_transmission">能蓝牙传输:%s</string>
+  <string name="battery_info_raw_voltage">电池容量(原始):%s</string>
+  <string name="battery_info_voltage">电池容量:%s</string>
+  <string name="battery_info_percent">电池占比:%s</string>
+  <string name="battery_info_old_percent">电池占比(老):%s</string>
+  <string name="battery_info_status_incharging_not_complete">充电中，未充满</string>
+  <string name="battery_info_status_incharging_complete">充电中，已充满</string>
+  <string name="battery_info_status_not_incharging">未充电</string>
+  <string name="battery_info_status_unknow">异常</string>
+  <string name="device_read_patch_version">硬件版本：%s  固件版本：%s</string>
+  <string name="device_read_device_info">放大倍率：%s  采样频率：%s  产品版本：%s 加密方式：%s  制造商：%s  信息：%s</string>
+
+  <!--main_menu-->
+  <string name="main_menu_scaning">设备扫描</string>
+  <string name="main_menu_connected">已连接列表</string>
+  <string name="main_menu_title">其他</string>
+  <string name="main_menu_check">运行检查</string>
+
+  <!--scan-->
+  <string name="connected">已连接</string>
+  <string name="start_scan">开始扫描</string>
+  <string name="stop_scan">停止扫描</string>
+  <string name="error_bluetooth_enable_title">蓝牙错误</string>
+  <string name="error_bluetooth_enable_message">请先打开蓝牙</string>
+  <string name="error_bluetooth_enable_open">去打开</string>
+  <string name="error_gps_enable_title">位置错误</string>
+  <string name="error_gps_enable_message">android 6.0 以上蓝牙需要位置功能，请先打开位置</string>
+  <string name="dialog_connect">正在连接设备 %s</string>
+
+  <!--device info-->
+  <string name="tv_patch_firmware_version">设备固件版本:%s</string>
+  <string name="tv_patch_hardware_version">设备硬件版本:%s</string>
+  <string name="tv_patch_sn">S/N:%s</string>
+  <string name="tv_patch_mac">Mac:%s</string>
+  <string name="tv_patch_battery">设备电量:%s</string>
+  <string name="tv_charge_firmware_version">充电盒固件版本:%s</string>
+  <string name="tv_charge_hardware_version">充电盒硬件版本:%s</string>
+  <string name="tv_charge_battery">充电盒电量:%s</string>
+  <string name="tv_denoising_open">打开降噪</string>
+  <string name="tv_denoising_close">关闭降噪</string>
+  <string name="tv_revert">反转图形</string>
+  <string name="tv_de_revert">不反转图形</string>
+  <string name="tv_switch_gain">切换增益</string>
+  <string name="tv_selecttime">选择时间</string>
+
+  <!--check-->
+  <string name="check_text_title_ble">蓝牙</string>
+  <string name="check_text_title_permisstions">权限</string>
+  <string name="check_text_ble_support">手机是否支持蓝牙功能？</string>
+  <string name="check_text_ble_enable">蓝牙是否可用？</string>
+  <string name="check_text_location_enable">位置是否可用？</string>
+  <string name="check_text_permission_ble">是否获取蓝牙权限？</string>
+  <string name="check_text_permission_location">是否获取位置权限？</string>
+
+  <!--OTA-->
+  <string name="ota_start">固件升级进行中...</string>
+  <string name="ota_process">固件升级已完成 %d%%</string>
+  <string name="ota_completed">固件升级完成</string>
+  <string name="ota_error">固件升级异常:code=%d msg=%s</string>
+  <string name="ota_error_title">固件升级异常</string>
+  <string name="low_battery_warning">低电量，请充电</string>
+  <string name="patch_info_mode">采样模式:%s</string>
+  <string name="patch_info_flash_save">实时存Flash:%s</string>
+  <string name="battery_info_temperature">温度:%s</string>
+  <string name="flash_info_new">总块数: %s, 已使用块数: %s, 数据秒数: %s</string>
+  <string name="flash_info_old">已使用块数: %s</string>
+  <string name="clear_database">清除数据</string>
+  <string name="export_to_mit16_file">导出为MIT16格式</string>
+  <string name="patch_info_dataType">330_1实时数据类型:%s</string>
+  <string name="patch_info_history_enable">330_1历史数据打开:%s</string>
+  <string name="patch_info_rts_enable">330_1实时数据打开:%s</string>
+  <string name="cancel">取消</string>
+  <string name="ok">是</string>
+</resources>

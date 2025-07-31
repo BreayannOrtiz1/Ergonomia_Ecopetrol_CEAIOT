@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:fillViewport="true"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toolbar"/>
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:paddingTop="@dimen/activity_vertical_margin"
+      android:paddingBottom="@dimen/activity_vertical_margin"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin">
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnGetDeviceInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Get Device Information"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnGetRTData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Get Real Time Data"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnGetRTWaveFormData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Get Real Time Waveform Data"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnGetHistoryData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Get History Data"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSetParameters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Set Parameters"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPingDevice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Ping Device"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFactoryReset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Factory Reset"/>
+      </LinearLayout>
+
+      <TextView
+          android:id="@+id/tvPrinter"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          />
+
+    </RelativeLayout>
+
+    <Button
+      android:id="@+id/btnDisconnect"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="@dimen/activity_horizontal_margin"
+      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+      android:layout_marginRight="@dimen/activity_horizontal_margin"
+      android:background="@color/colorAccent"
+      android:text="@string/disconnect"
+      android:textColor="@color/white"/>
+
+  </LinearLayout>
+</ScrollView>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">SDK-01_Demo</string>
+  <string name="graphics">Graphics</string>
+  <string name="disconnect">Disconnect</string>
+  <string name="samplerate_125">125Hz</string>
+  <string name="samplerate_250">250Hz</string>
+  <string name="ok">Ok</string>
+  <string name="cancel">Cancel</string>
+  <string name="clear">Clear</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+
+  <!--Action Bar menu items-->
+  <string name="action_switch_graphics">SwitchView</string>
+
+  <string name="str_detail">Log Detail</string>
+  <string name="str_mode_zero">ECG&#038;ACC</string>
+  <string name="str_mode_one">RRI&#038;ACC</string>
+  <string name="str_mode_two">RRI&#038;ECG</string>
+  <string name="str_mode_three">RRI</string>
+  <string name="str_start_sampling">Start Sampling_M</string>
+  <string name="str_stop_sampling">Stop Sampling</string>
+  <string name="str_shut_down">Shutdown</string>
+  <string name="str_selftest">Self Test</string>
+  <string name='str_not_selftest'>Self test</string>
+  <string name="str_upload_flash">Upload Flash</string>
+  <string name="str_cancel_flash">Cancel Upload</string>
+  <string name="str_erase_flash">Erase Flash</string>
+  <string name="str_query_flash">Query Flash</string>
+  <string name="str_read_version">Read Patch Version</string>
+  <string name="str_read_device_info">Read Device Info</string>
+  <string name="str_check_patch_status">Check Patch Status</string>
+  <string name="str_ota">OTA</string>
+  <string name="str_set_info">Set Info</string>
+  <string name="str_read_info">Read Info</string>
+  <string name="str_erase_info">Erase Info</string>
+  <string name="str_read_sninfo">Read SN</string>
+
+  <string name="title_activity_enter">EnterActivity</string>
+  <string name="navigation_drawer_open">Open Navigation Drawer</string>
+  <string name="navigation_drawer_close">Close Navigation Drawer</string>
+  <string name="nav_header_title">VivaLNK.Group</string>
+  <string name="nav_header_subtitle">Support@VivaLNK.com</string>
+  <string name="nav_header_desc">Navigation Header</string>
+  <string name="activity_graphic">Data Graphic</string>
+  <string name="activity_history">Data History</string>
+
+  <!--device info-->
+  <string name="open_engineer">Open Engineer Module</string>
+  <string name="title_activity_device">Device Detail</string>
+  <string name="text_fw_version">FW Version: </string>
+  <string name="text_hw_version">HW Version: </string>
+  <string name="text_device_info">DeviceInfo: </string>
+  <string name="title_todo">What do you want?</string>
+  <string name="input_text_hint">Input new user info</string>
+  <string name="input_text_empty">Empty input</string>
+  <string name="error_no_support_engineer_module">Current app not support engineering module</string>
+  <string name="send_command_success">%s Success</string>
+  <string name="send_command_error">%s Error</string>
+  <string name="info">Information</string>
+  <string name="patch_info_sampling">Sampling:%s</string>
+  <string name="patch_info_leadOn">LeadOn:%s</string>
+  <string name="patch_info_sampleFrequency">Sample Frequency:%s</string>
+  <string name="patch_info_baselinealgoopen">BaseLine Algo:%s</string>
+  <string name="patch_info_rtsdataopen">RTS Data:%s</string>
+  <string name="patch_info_mode">Sample Mode:%s</string>
+  <string name="patch_info_flash_save">RTS Flash Save:%s</string>
+  <string name="battery_info_status">Battery Status:%s</string>
+  <string name="battery_info_level">Battery Level:%s</string>
+  <string name="battery_info_temperature">Temperature:%s</string>
+  <string name="battery_info_can_ota">Can OTA:%s</string>
+  <string name="battery_info_can_sampling">Can Sampling:%s</string>
+  <string name="battery_info_can_ble_transmission">Can BLE Transmission:%s</string>
+  <string name="battery_info_raw_voltage">Battery Raw Voltage:%s</string>
+  <string name="battery_info_voltage">Battery Voltage:%s</string>
+  <string name="battery_info_percent">Battery Percent:%s</string>
+  <string name="battery_info_old_percent">Battery Old Percent:%s</string>
+  <string name="battery_info_status_incharging_not_complete">Incharging, not complete</string>
+  <string name="battery_info_status_incharging_complete">In charging, complete</string>
+  <string name="battery_info_status_not_incharging">Not in charging</string>
+  <string name="battery_info_status_unknow">Unknow</string>
+  <string name="device_read_patch_version">hwVersion: %s  fwVersion: %s</string>
+  <string name="device_read_device_info">magnification: %s  samplingFrequency: %s  model: %s  encryption: %s  manufacturer: %s  info: %s</string>
+
+  <!--main_menu-->
+  <string name="main_menu_scaning">Device Scanning</string>
+  <string name="main_menu_connected">Connected Devices</string>
+  <string name="main_menu_title">Other</string>
+  <string name="main_menu_check">Runtime Check</string>
+
+  <!--scan-->
+  <string name="connected">connected</string>
+  <string name="start_scan">Scan</string>
+  <string name="stop_scan">Stop Scanning</string>
+  <string name="error_bluetooth_enable_title">Bluetooth Error</string>
+  <string name="error_bluetooth_enable_message">Please open bluetooth</string>
+  <string name="error_bluetooth_enable_open">Open</string>
+  <string name="error_gps_enable_title">Location Error</string>
+  <string name="error_gps_enable_message">Please open gps,because need location above android 6.0</string>
+  <string name="dialog_connect">Connecting to %s</string>
+
+  <!--device info-->
+  <string name="tv_patch_firmware_version">Patch Firmware Version:%s</string>
+  <string name="tv_patch_hardware_version">Patch Hardware Version:%s</string>
+  <string name="tv_patch_sn">S/N:%s</string>
+  <string name="tv_patch_mac">Mac:%s</string>
+  <string name="tv_patch_battery">Patch Battery:%s</string>
+  <string name="tv_charge_firmware_version">Charge Firmware Version:%s</string>
+  <string name="tv_charge_hardware_version">Charge Firmware Version:%s</string>
+  <string name="tv_charge_battery">Charge Battery:%s</string>
+  <string name="tv_denoising_open">Open Denoising</string>
+  <string name="tv_denoising_close">Close Denoising</string>
+  <string name="tv_revert">Revert</string>
+  <string name="tv_de_revert">De-Revert</string>
+  <string name="tv_switch_gain">SwitchGain</string>
+  <string name="tv_selecttime">SelectTime</string>
+
+  <!--check-->
+  <string name="check_text_title_ble">BLE</string>
+  <string name="check_text_title_permisstions">Permisstions</string>
+  <string name="check_text_ble_support">Is your phone supports BLE feature?</string>
+  <string name="check_text_ble_enable">Is Bluetooth enable?</string>
+  <string name="check_text_location_enable">Is Location enable?</string>
+  <string name="check_text_permission_ble">Is Bluetooth permission granted?</string>
+  <string name="check_text_permission_location">Is Location permission granted?</string>
+
+  <!--OTA-->
+  <string name="ota_start">OTA processing...</string>
+  <string name="ota_process">OTA processing %d%%</string>
+  <string name="ota_completed">OTA Completed</string>
+  <string name="ota_error">OTA Error:code=%d msg=%s</string>
+  <string name="ota_error_title">OTA Error</string>
+  <string name="low_battery_warning">Low battery, Please charge</string>
+  <string name="str_switch_mode">Switch Mode</string>
+  <string name="flash_info_new">Total Block: %s, Use Block: %s, Seconds: %s</string>
+  <string name="flash_info_old">Use Block: %s</string>
+  <string name="clear_database">Clear Database</string>
+  <string name="export_to_mit16_file">Export to MIT16 File</string>
+  <string name="patch_info_dataType">330_1 RTS Data Type:%s</string>
+  <string name="patch_info_rts_enable">330_1 RTS Enable:%s</string>
+  <string name="patch_info_history_enable">330_1 History Enable:%s</string>
+</resources>

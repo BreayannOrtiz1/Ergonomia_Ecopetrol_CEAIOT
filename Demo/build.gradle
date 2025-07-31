@@ -1,0 +1,190 @@
+import java.util.regex.Pattern
+
+apply plugin: 'com.android.application'
+apply plugin: 'android-aspectjx'
+apply from  : "$rootDir/ext.gradle"
+
+buildscript {
+    repositories {
+        maven { url 'https://jitpack.io' }
+
+    }
+}
+
+//git commit count
+static def gitDemoVersionCode() {
+    int buildID = 915
+    return buildID
+}
+
+static def getSDKVersionCode() {
+    return String.format("%04d", 1279 % 10000)
+}
+
+static def getFormatVersionCode() {
+  def ret = gitDemoVersionCode()
+  return String.format("%04d", ret % 10000)
+}
+
+//git latest tag
+def gitVersionName() {
+    String customVersionName = "1.2.0"
+    return customVersionName
+}
+
+static def getCurrentBuildTime() {
+    return System.currentTimeMillis()
+}
+
+static def getProductName() {
+    return "SDK-01_Demo"
+}
+
+def outputName = getProductName() + "-v${gitVersionName()}" + "_Android.apk"
+
+android {
+    defaultConfig {
+        minSdkVersion androidVersion.minSdkVersion
+        targetSdkVersion androidVersion.targetSdkVersion
+        compileSdkVersion androidVersion.compileSdkVersion
+        buildToolsVersion androidVersion.buildToolsVersion
+        applicationId "com.vivalnk.sdk.vSDK.demo"
+        versionCode gitDemoVersionCode()
+        versionName gitVersionName()
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+        flavorDimensions "SDK-01"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile
+            storePassword
+            keyAlias
+            keyPassword
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            jniDebuggable true
+            renderscriptDebuggable true
+            useProguard false
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+            buildConfigField "boolean", "openLeakCanary", "false"
+            buildConfigField "long", "buildTime",  "${getCurrentBuildTime()}L"
+        }
+
+        release {
+            initWith(debug)
+            debuggable true
+            jniDebuggable true
+            renderscriptDebuggable true
+            useProguard true
+            minifyEnabled true
+            shrinkResources true
+            buildConfigField "boolean", "openLeakCanary", "false"
+            buildConfigField "long", "buildTime",  "${getCurrentBuildTime()}L"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            if (buildType.getName() == "release") {
+                outputFileName =
+                    "${getProductName()}-v${gitVersionName()}.${getFormatVersionCode()}(${getSDKVersionCode()})_Android_release.apk"
+            } else if (buildType.getName() == "debug") {
+                outputFileName =
+                    "${getProductName()}-v${gitVersionName()}.${getFormatVersionCode()}(${getSDKVersionCode()})_Android_debug.apk"
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+aspectjx {
+    enabled false
+    exclude 'android.support'
+    exclude 'com.squareup'
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    maven {
+        url "https://dl.bintray.com/lukaville/maven"
+    }
+    maven { url ' https://jcenter.bintray.com/' }
+    maven { url 'https://artifactory.appodeal.com/appodeal-public/' }
+    maven { url 'https://repo1.maven.org/maven2/' }
+}
+
+
+apply from: "$rootDir/buildscript/dependencies.gradle"
+
+dependencies {
+    //local libaries
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+    //local app module
+    implementation project(':base')
+
+    //other libraries
+    implementation supportLib.multidex
+
+    implementation Libs.PickerView
+
+    debugImplementation Libs.leakcanary_android
+    releaseImplementation Libs.leakcanary_android_no_op
+
+    //bugly
+    implementation Libs.bugly_crashreport
+    implementation Libs.bugly_nativecrashreport
+
+    implementation 'com.microsoft.azure.sdk.iot:iot-device-client:2.5.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+
+    addSDKDependencies()
+    addCommonDependencies()
+    addTestDependencies()
+
+}
+
+ext {
+    getDemoVersion = this.&gitVersionName
+    getDemoVersionCode = this.&getFormatVersionCode
+}
+
+//read sign info
+File propFile = file('signing.properties')
+if (propFile.exists()) {
+    Properties props = new Properties()
+    props.load(new FileInputStream(propFile))
+    if (props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+        android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+    } else {
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    android.buildTypes.release.signingConfig = null
+}

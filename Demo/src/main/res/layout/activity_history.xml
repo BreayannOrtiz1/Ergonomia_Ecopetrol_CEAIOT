@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  >
+
+  <include layout="@layout/toolbar"/>
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <com.vivalnk.sdk.demo.base.widget.DragEcgView
+      android:id="@+id/dragEcgView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+    </com.vivalnk.sdk.demo.base.widget.DragEcgView>
+    <Button
+      android:id="@+id/btnSwitchGain"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentLeft="true"
+      android:text="@string/tv_switch_gain"
+      />
+    <Button
+      android:id="@+id/btnRevert"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_toRightOf="@id/btnSwitchGain"
+      android:text="@string/tv_revert"
+      />
+    <Button
+      android:id="@+id/btnTimePicker"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_toRightOf="@id/btnRevert"
+      android:text="@string/tv_selecttime"
+      />
+
+  </RelativeLayout>
+
+
+</LinearLayout>

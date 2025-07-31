@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rotationX="0">
+
+  <com.vivalnk.sdk.demo.base.widget.RTSEcgView
+      android:id="@+id/ecgView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_alignParentTop="true"
+      android:layout_marginTop="0dp"></com.vivalnk.sdk.demo.base.widget.RTSEcgView>
+
+  <TextView
+      android:id="@+id/tvHR"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:background="@color/transparent"
+      android:text="HR: "
+      android:textSize="18sp"
+      android:textStyle="bold" />
+
+  <TextView
+      android:id="@+id/tvRR"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/tvHR"
+      android:layout_alignLeft="@id/tvHR"
+      android:layout_centerHorizontal="true"
+      android:background="@color/transparent"
+      android:text="RR: "
+      android:textSize="18sp"
+      android:textStyle="bold" />
+
+  <Button
+      android:id="@+id/btnSwitchGain"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentBottom="true"
+      android:text="@string/tv_switch_gain" />
+
+  <Button
+      android:id="@+id/btnRevert"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_toRightOf="@id/btnSwitchGain"
+      android:text="@string/tv_revert" />
+
+  <Button
+      android:id="@+id/btnNoisy"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_toRightOf="@id/btnRevert"
+      android:text="@string/tv_denoising_open" />
+
+</RelativeLayout>

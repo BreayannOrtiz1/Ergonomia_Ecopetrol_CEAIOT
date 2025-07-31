@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/layoutCuestionario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre (opcional)"
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="8dp"
+            android:maxLines="3" />
+
+        <!-- Aquí irán las preguntas. Puedo ayudarte a pegarlas a continuación -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="¿Se siente cansado o fatigado?"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/rgCansado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+            <RadioButton android:id="@+id/rbCansadoSi" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Sí" />
+            <RadioButton android:id="@+id/rbCansadoNo" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="No" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="¿Qué tan cansado se siente de 1 a 10?"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/seekCansancio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:max="9"
+            app:tickMarkTint="#0388F4" />
+
+        <TextView
+            android:id="@+id/tvSeekCansancioValor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valor: 1"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿De 1 a 5 qué tan cansado se siente ahora mismo?"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="12dp" />
+
+        <RadioGroup
+            android:id="@+id/rgNivelCansancio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+            <RadioButton android:id="@+id/rbNivel1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="1"/>
+            <RadioButton android:id="@+id/rbNivel2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="2"/>
+            <RadioButton android:id="@+id/rbNivel3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="3"/>
+            <RadioButton android:id="@+id/rbNivel4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="4"/>
+            <RadioButton android:id="@+id/rbNivel5" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="5"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Cómo se siente en este momento?"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/etEstadoAnimo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Describa su estado"
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="8dp"
+            android:maxLines="3" />
+
+        <Button
+            android:id="@+id/btnGuardarCuestionario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar respuestas"
+            android:textColor="@android:color/white"
+            android:background="@android:color/holo_green_dark"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
+
+    </LinearLayout>
+</ScrollView>
