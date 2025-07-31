@@ -146,6 +146,99 @@ public class DeviceMenuActivity extends ConnectedActivity {
     };
     mqttTimeoutHandler.postDelayed(mqttTimeoutRunnable, MQTT_SEND_TIMEOUT_MS);
 }
+
+private void sendMQTTMessage(SampleData data){
+    try {
+        // 1. TimeStamp
+        long timestamp = data.getTime();
+        // 2. DeviceID
+        String deviceID = data.getDeviceID();
+        // 3. DeviceSN
+        String deviceSN = mDevice.getSn(); // Asumiendo que mDevice está disponible
+        // 4. HR
+        Integer hr = data.getHR();
+        // 5. RR
+        Float rr = data.getRR();
+        // 6. ACC (acelerómetro)
+        Motion[] acc = data.getACC();
+        // 7. AccAccuracy
+        int accAccuracy = data.getAccAccuracy();
+        // 8. AverageRR
+        Float avgRR = data.getAverageRR();
+        // 9. isLeadOn
+        Boolean isLeadOn = data.isLeadOn();
+        // Mostrar alerta si isLeadOn es false
+        if (isLeadOn != null && !isLeadOn) {
+            mNotificationUtils.sendNotification("Sensor desconectado", "Por favor, revisa el electrodo. No se están enviando datos.");
+        }
+        // 10. isActivity
+        Boolean isActivity = data.isActivity();
+        // 11. Batería
+        Integer batteryLevel = lastBatteryLevel;
+        // 12. ACC
+        StringBuilder accArray = new StringBuilder("[");
+        if (acc != null) {
+            for (int i = 0; i < acc.length; i++) {
+                accArray.append(acc[i]);
+                if (i < acc.length - 1) accArray.append(",");
+            }
+        }
+        accArray.append("]");
+        // 13. ECG
+        int[] ecg = data.getECG(); // 128 datos
+        StringBuilder ecgArray = new StringBuilder("[");
+        if (ecg != null) {
+            for (int i = 0; i < ecg.length; i++) {
+                ecgArray.append(ecg[i]);
+                if (i < ecg.length - 1) ecgArray.append(",");
+            }
+        }
+        ecgArray.append("]");
+        // JSON
+        if (timestamp <= 0) timestamp = System.currentTimeMillis(); // o usar System.currentTimeMillis() si viene vacío
+        if (deviceID == null || deviceID.isEmpty()) deviceID = "N/A";
+        if (deviceSN == null) deviceSN = "N/A";
+        if (hr == null) hr = -1;
+        if (rr == null) rr = -1f;
+        // ACC
+        if (avgRR == null) avgRR = -1f;
+        if (isLeadOn == null) isLeadOn = false;
+        if (isActivity == null) isActivity = false;
+        if (batteryLevel == null) batteryLevel = -1;
+        // ECG
+        if (cansado == null) cansado = "N/A";
+        if (slider < 0) slider = -1;
+        if (nivel == null) nivel = "N/A";
+        if (estado == null) estado = "N/A";
+        String payload = "{"
+                + "\"TimeStamp\":" + timestamp
+                + ",\"DeviceID\":\"" + deviceID + "\""
+                + ",\"DeviceSN\":\"" + deviceSN + "\""
+                + ",\"HR\":" + hr
+                + ",\"RR\":" + rr
+                + ",\"ACC\":" + accArray.toString()
+                + ",\"AccAccuracy\":" + accAccuracy
+                + ",\"AverageRR\":" + avgRR
+                + ",\"isLeadOn\":" + isLeadOn
+                + ",\"isActivity\":" + isActivity
+                + ",\"BatteryPercentage\":" + batteryLevel
+                + ",\"ECG\":" + ecgArray.toString()
+                + ",\"R1\":\"" + cansado + "\""
+                + ",\"R2\":"+ slider
+                + ",\"R3\":\""+ nivel + "\""
+                + ",\"R4\":\""+ estado + "\""
+                + "}";
+
+        MqttMessage message = new MqttMessage(payload.getBytes());
+        message.setQos(1);
+        message.setRetained(false);
+        mqttClient.publish(topic, message);
+
+        restartMqttTimeoutTimer(); // Reiniciar el temporizador de timeout, se utiliza para revisar si se estan enviando mensajes MQTT cada X time
+    } catch (MqttException e) {
+        showToast("Error publishing message: " + e.getMessage());
+    }
+}
   @Subscribe
   public void onDataUpdate(SampleData data) {
     if (!data.getDeviceID().equals(mDevice.getId())) {
@@ -156,82 +249,8 @@ public class DeviceMenuActivity extends ConnectedActivity {
         public void run() {
             mDataLogView.updateLog(data.toSimpleString());
             if (isSendingMQTT && mqttClient.isConnected()) {
-                try {
-                    // 1. TimeStamp
-                    long timestamp = data.getTime();
-                    // 2. DeviceID
-                    String deviceID = data.getDeviceID();
-                    // 3. DeviceSN
-                    String deviceSN = mDevice.getSn(); // Asumiendo que mDevice está disponible
-                    // 4. HR
-                    Integer hr = data.getHR();
-                    // 5. RR
-                    Float rr = data.getRR();
-                    // 6. ACC (acelerómetro)
-                    Motion[] acc = data.getACC();
-                    // 7. AccAccuracy
-                    int accAccuracy = data.getAccAccuracy();
-                    // 8. AverageRR
-                    Float avgRR = data.getAverageRR();
-                    // 9. isLeadOn
-                    Boolean isLeadOn = data.isLeadOn();
-                    // Mostrar alerta si isLeadOn es false
-                    if (isLeadOn != null && !isLeadOn) {
-                      mNotificationUtils.sendNotification("Sensor desconectado", "Por favor, revisa el electrodo. No se están enviando datos.");
-                    }
-                    // 10. isActivity
-                    Boolean isActivity = data.isActivity();
-                    // 11. Batería
-                    Integer batteryLevel = lastBatteryLevel;
-                    int[] ecg = data.getECG(); // 128 datos
+                sendMQTTMessage(data);
 
-
-                    // JSON
-                    StringBuilder accArray = new StringBuilder("[");
-                    if (acc != null) {
-                        for (int i = 0; i < acc.length; i++) {
-                            accArray.append(acc[i]);
-                            if (i < acc.length - 1) accArray.append(",");
-                        }
-                    }
-                    accArray.append("]");
-
-                    StringBuilder ecgArray = new StringBuilder("[");
-                    if (ecg != null) {
-                        for (int i = 0; i < ecg.length; i++) {
-                            ecgArray.append(ecg[i]);
-                            if (i < ecg.length - 1) ecgArray.append(",");
-                        }
-                    }
-                    ecgArray.append("]");
-
-                    String payload = "{"
-                        + "\"TimeStamp\":" + timestamp
-                        + ",\"DeviceID\":\"" + deviceID + "\""
-                        + ",\"DeviceSN\":\"" + deviceSN + "\""
-                        + ",\"HR\":" + hr
-                        + ",\"RR\":" + rr
-                        + ",\"ACC\":" + accArray.toString()
-                        + ",\"AccAccuracy\":" + accAccuracy
-                        + ",\"AverageRR\":" + avgRR
-                        + ",\"isLeadOn\":" + isLeadOn
-                        + ",\"isActivity\":" + isActivity
-                        + ",\"Battery\":" + batteryLevel
-                        + ",\"ECG\":" + ecgArray.toString()
-                        + ",\"Respuesta_pregunta_1\":\"" + cansado + "\""
-                        + ",\"Respuesta_pregunta_2\":"+ slider 
-                        + ",\"Respuesta_pregunta_3\":\""+ nivel + "\""
-                        + ",\"Respuesta_pregunta_4\":\""+ estado + "\""
-                        + "}";
-
-                    MqttMessage message = new MqttMessage(payload.getBytes());
-                    message.setQos(1);
-                    message.setRetained(false);
-                    mqttClient.publish(topic, message);
-                    restartMqttTimeoutTimer(); // Reiniciar el temporizador de timeout
-                } catch (MqttException e) {
-                    showToast("Error publishing message: " + e.getMessage());
-                }
             }
         }
     });
