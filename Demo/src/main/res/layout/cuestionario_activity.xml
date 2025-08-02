@@ -36,6 +36,33 @@
             android:layout_marginBottom="8dp"
             android:textSize="14sp"
             android:maxLines="3" />
+        <EditText
+            android:id="@+id/etEdad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Edad (opcional)"
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"
+            android:maxLines="3" />
+        <EditText
+            android:id="@+id/etSexo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sexo: Hombre/Mujer (opcional)"
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"
+            android:maxLines="3" />
+        <EditText
+            android:id="@+id/etCargo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Cargo: Ejemplo -> Maquinista (opcional)"
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"
+            android:maxLines="3" />
 
         <!-- Aquí irán las preguntas.-->
         <TextView
@@ -386,9 +413,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ingrese el puntaje de la prueba cognitiva"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:textSize="18sp"
-            android:layout_marginTop="50dp" />
+            android:layout_marginTop="30dp" />
 
         <EditText
             android:id="@+id/etResultPCognitiva"
@@ -399,6 +426,202 @@
             android:layout_marginBottom="8dp"
             android:maxLines="3" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#CCCCCC"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/etPreguntaFase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A. ¿Qué fase de la jornada estás por iniciar?"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp" />
+
+        <RadioGroup
+            android:id="@+id/rgFaseJornada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:textStyle="normal">
+
+            <RadioButton
+                android:id="@+id/rbInicioTurno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicio del turno" />
+
+            <RadioButton
+                android:id="@+id/rbMitadTurno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mitad del turno" />
+
+            <RadioButton
+                android:id="@+id/rbFinalTurno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Final del turno" />
+
+            <RadioButton
+                android:id="@+id/rbPausa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pausa o descanso" />
+
+            <RadioButton
+                android:id="@+id/rbRetornoPausa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retorno de pausa" />
+
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tvPreguntaExigenciaFisica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="B. ¿Qué nivel de exigencia física tendrá la actividad que realizarás durante la siguiente hora?"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp" />
+
+        <RadioGroup
+            android:id="@+id/rgExigenciaFisica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rbMuyBajaFisica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Muy baja (reposo o tareas livianas)" />
+
+            <RadioButton
+                android:id="@+id/rbBajaFisica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Baja (movimientos simples o repetitivos sin carga)" />
+
+            <RadioButton
+                android:id="@+id/rbModeradaFisica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Moderada (movimientos activos o uso de herramientas)" />
+
+            <RadioButton
+                android:id="@+id/rbAltaFisica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alta (esfuerzo sostenido o manipulación de carga moderada)" />
+
+            <RadioButton
+                android:id="@+id/rbMuyAltaFisica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Muy alta (esfuerzo físico intenso o carga pesada)" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tvPreguntaCargaMental"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="C. ¿Qué nivel de concentración mental o atención requiere la tarea que vas a realizar?"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp" />
+
+        <RadioGroup
+            android:id="@+id/rgCargaMental"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rbMuyBajaMental"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Muy baja (actividad mecánica o automática)" />
+
+            <RadioButton
+                android:id="@+id/rbBajaMental"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Baja (concentración básica)" />
+
+            <RadioButton
+                android:id="@+id/rbModeradaMental"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Moderada (atención continua)" />
+
+            <RadioButton
+                android:id="@+id/rbAltaMental"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alta (toma de decisiones, supervisión crítica)" />
+
+            <RadioButton
+                android:id="@+id/rbMuyAltaMental"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Muy alta (resolución de problemas complejos o vigilancia constante)" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tvPreguntaFactores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="D. ¿Estás experimentando alguno de los siguientes factores en este momento? (puedes marcar más de uno)"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp" />
+
+        <CheckBox
+            android:id="@+id/cbCalor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calor o temperatura elevada" />
+
+        <CheckBox
+            android:id="@+id/cbPostura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Postura incómoda o sostenida" />
+
+        <CheckBox
+            android:id="@+id/cbRuido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ruido ambiental alto" />
+
+        <CheckBox
+            android:id="@+id/cbMovimiento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Movimiento constante o desplazamiento" />
+
+        <CheckBox
+            android:id="@+id/cbRepetitivas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tareas repetitivas" />
+
+        <CheckBox
+            android:id="@+id/cbNinguno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ninguno" />
         <Button
             android:id="@+id/btnGuardarCuestionario"
             android:layout_width="match_parent"

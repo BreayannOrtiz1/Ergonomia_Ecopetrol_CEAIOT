@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +48,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -121,6 +125,9 @@ public class DeviceMenuActivity extends ConnectedActivity {
 
   //  Respuestas
   String nombre = " ";
+  String edad = "";
+  String sexo = "";
+  String cargo = "";
   String res1 = " ";
   String res2 = " ";
   String res3 = " ";
@@ -133,6 +140,9 @@ public class DeviceMenuActivity extends ConnectedActivity {
   String res10 = " ";
 
   String puntajeJuego = "";
+
+  ArrayList<String> factoresSeleccionados;
+  String factoresSeleccionadosJson = null;
 
 
 
@@ -190,8 +200,9 @@ private void sendMQTTMessage(SampleData data){
             }
         }
         accArray.append("]");
+
         // 13. ECG
-        int[] ecg = data.getECG(); // 128 datos
+        float[] ecg = data.getEcgInMillivolt(); // 128 datos
         StringBuilder ecgArray = new StringBuilder("[");
         if (ecg != null) {
             for (int i = 0; i < ecg.length; i++) {
@@ -199,6 +210,8 @@ private void sendMQTTMessage(SampleData data){
                 if (i < ecg.length - 1) ecgArray.append(",");
             }
         }
+        // 14. RRi [ms]
+        int[] RRi = data.getRRI();
         ecgArray.append("]");
         // JSON
         if (timestamp <= 0) timestamp = System.currentTimeMillis(); // o usar System.currentTimeMillis() si viene vacío
@@ -212,7 +225,11 @@ private void sendMQTTMessage(SampleData data){
         if (isActivity == null) isActivity = false;
         if (batteryLevel == null) batteryLevel = -1;
         // ECG
+        if (RRi == null) RRi = new int[]{0, 0, 0, 0};
         if (nombre == null) nombre = "N/A";
+        if (edad == null) edad = "N/A";
+        if (sexo == null) sexo = "N/A";
+        if (cargo == null) cargo = "N/A";
         if (res1 == null) res1 = "N/A";
         if (res2 == null) res2 = "N/A";
         if (res3 == null) res3 = "N/A";
@@ -224,6 +241,17 @@ private void sendMQTTMessage(SampleData data){
         if (res9 == null) res9 = "N/A";
         if (res10 == null) res10 = "N/A";
         if (puntajeJuego == null) puntajeJuego = "N/A";
+        if (factoresSeleccionados != null && !factoresSeleccionados.isEmpty()) {
+            // Poner comillas a cada elemento
+          ArrayList<String> quoted = new ArrayList<>();
+          for (String s : factoresSeleccionados) {
+            quoted.add("\"" + s + "\"");
+          }
+          factoresSeleccionadosJson = "[" + TextUtils.join(",", quoted) + "]";
+        } else {
+            factoresSeleccionadosJson = "[]";
+            Log.d("MQTT", "No se seleccionaron factores.");
+        }
 
 
         String payload = "{"
@@ -239,7 +267,11 @@ private void sendMQTTMessage(SampleData data){
                 + ",\"isActivity\":" + isActivity
                 + ",\"BatteryPercentage\":" + batteryLevel
                 + ",\"ECG\":" + ecgArray.toString()
+                + ",\"RRi\":" + Arrays.toString(RRi).replace(" ", "")
                 + ",\"Nombre\":\"" + nombre + "\""
+                + ",\"Edad\":\""+ edad + "\""
+                + ",\"Sexo\":\""+ sexo + "\""
+                + ",\"Cargo\":\""+ cargo + "\""
                 + ",\"R1\":\""+ res1 + "\""
                 + ",\"R2\":\""+ res2 + "\""
                 + ",\"R3\":\""+ res3 + "\""
@@ -251,6 +283,7 @@ private void sendMQTTMessage(SampleData data){
                 + ",\"R9\":\""+ res9 + "\""
                 + ",\"R10\":\""+ res10 + "\""
                 + ",\"PuntajeJuego\":\""+ puntajeJuego +"\""
+                + ",\"FactoresSelecionados\":" + factoresSeleccionadosJson
                 + "}";
 
         MqttMessage message = new MqttMessage(payload.getBytes());
@@ -833,7 +866,11 @@ private void solicitarExclusionBateria() {
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == 101 && resultCode == RESULT_OK) {
+        assert data != null;
         nombre = data.getStringExtra("Nombre");
+        edad = data.getStringExtra("Edad");
+        sexo = data.getStringExtra("Sexo");
+        cargo = data.getStringExtra("Cargo");
         res1 = data.getStringExtra("respuesta1");
         res2 = data.getStringExtra("respuesta2");
         res3 = data.getStringExtra("respuesta3");
@@ -845,6 +882,8 @@ private void solicitarExclusionBateria() {
         res9 = data.getStringExtra("respuesta9");
         res10 = data.getStringExtra("respuesta10");
         puntajeJuego = data.getStringExtra("puntajeJuego");
+        factoresSeleccionados = data.getStringArrayListExtra("FactoresSeleccionados");
+
         //estado = data.getStringExtra("respuestaTexto");
     }
     /*if (requestCode == ACTIVITY_CHOOSE_FILE) {

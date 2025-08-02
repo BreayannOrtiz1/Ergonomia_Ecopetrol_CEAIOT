@@ -2,8 +2,11 @@ package com.vivalnk.sdk.demo.vital.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -11,12 +14,21 @@ import android.widget.RadioGroup;
 
 import com.vivalnk.sdk.demo.vital.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cuestionario extends Activity {
-    RadioGroup rgNivelResp1, rgNivelResp2, rgNivelResp3, rgNivelResp4, rgNivelResp5, rgNivelResp6, rgNivelResp7, rgNivelResp8, rgNivelResp9, rgNivelResp10;
-    EditText etNombre, etResultPCognitiva;
+    RadioGroup rgNivelResp1, rgNivelResp2, rgNivelResp3, rgNivelResp4, rgNivelResp5, rgNivelResp6,
+            rgNivelResp7, rgNivelResp8, rgNivelResp9, rgNivelResp10, rgFaseJornada, rgExigenciaFisica,
+            rgCargaMental;
+
+    CheckBox cbCalor, cbPostura, cbRuido, cbMovimiento, cbRepetitivas, cbNinguno;
+    EditText etNombre, etEdad, etSexo, etCargo, etResultPCognitiva;
     Button btnGuardar;
 
-    private String getRadioCroupValue(RadioGroup group){
+    List<String> factoresSeleccionados = new ArrayList<>();
+
+    private String getRadioGroupValue(RadioGroup group){
         int groupId = group.getCheckedRadioButtonId();
         if (groupId != -1) {
             RadioButton rb = findViewById(groupId);
@@ -24,13 +36,43 @@ public class Cuestionario extends Activity {
         }
         return "";
     }
-
+    private void getCheckBoxValues(){
+        if (cbCalor.isChecked()) {
+            factoresSeleccionados.add("calor");
+        }
+        if (cbPostura.isChecked()) {
+            factoresSeleccionados.add("postura_incomoda");
+        }
+        if (cbRuido.isChecked()) {
+            factoresSeleccionados.add("ruido");
+        }
+        if (cbMovimiento.isChecked()) {
+            factoresSeleccionados.add("movimiento");
+        }
+        if (cbRepetitivas.isChecked()) {
+            factoresSeleccionados.add("repetitivas");
+        }
+        if (cbNinguno.isChecked()) {
+            factoresSeleccionados.clear(); // ignorar todo lo anterior si elige 'Ninguno'
+            factoresSeleccionados.add("ninguno");
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cuestionario_activity); // conecta con el XML
+        cbCalor = findViewById(R.id.cbCalor);
+        cbPostura = findViewById(R.id.cbPostura);
+        cbRuido = findViewById(R.id.cbRuido);
+        cbMovimiento = findViewById(R.id.cbMovimiento);
+        cbRepetitivas = findViewById(R.id.cbRepetitivas);
+        cbNinguno = findViewById(R.id.cbNinguno);
 
         etNombre    =  findViewById(R.id.etNombre);
+        etEdad      =  findViewById(R.id.etEdad);
+        etSexo      =  findViewById(R.id.etSexo);
+        etCargo     =  findViewById(R.id.etCargo);
+
         rgNivelResp1 = findViewById(R.id.rgNivelResp1);
         rgNivelResp2 = findViewById(R.id.rgNivelResp2);
         rgNivelResp3 = findViewById(R.id.rgNivelResp3);
@@ -43,31 +85,63 @@ public class Cuestionario extends Activity {
         rgNivelResp10 = findViewById(R.id.rgNivelResp10);
         etResultPCognitiva = findViewById(R.id.etResultPCognitiva);
 
+        rgFaseJornada   = findViewById(R.id.rgFaseJornada);
+        rgExigenciaFisica   = findViewById(R.id.rgExigenciaFisica);
+        rgCargaMental   = findViewById(R.id.rgCargaMental);
+        // CheckBoxes
+
         btnGuardar = findViewById(R.id.btnGuardarCuestionario);
 
+        cbNinguno.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                cbCalor.setChecked(false);
+                cbPostura.setChecked(false);
+                cbRuido.setChecked(false);
+                cbMovimiento.setChecked(false);
+                cbRepetitivas.setChecked(false);
+            }
+        });
+        View.OnClickListener desmarcarNingunoListener = v -> {
+            if (cbNinguno.isChecked()) {
+                cbNinguno.setChecked(false);
+            }
+        };
+
+        cbCalor.setOnClickListener(desmarcarNingunoListener);
+        cbPostura.setOnClickListener(desmarcarNingunoListener);
+        cbRuido.setOnClickListener(desmarcarNingunoListener);
+        cbMovimiento.setOnClickListener(desmarcarNingunoListener);
+        cbRepetitivas.setOnClickListener(desmarcarNingunoListener);
+
         // Cuando se presiona "Guardar"
-
+        //////////////////////////////////////
         btnGuardar.setOnClickListener(v -> {
-            String nombre = etNombre.getText().toString();
+            String nombre   = etNombre.getText().toString();
+            String Edad     = etEdad.getText().toString();
+            String Sexo     = etSexo.getText().toString();
+            String Cargo    = etCargo.getText().toString();
 
-            String P1 = getRadioCroupValue(rgNivelResp1);
-            String P2 = getRadioCroupValue(rgNivelResp2);
-            String P3 = getRadioCroupValue(rgNivelResp3);
-            String P4 = getRadioCroupValue(rgNivelResp4);
-            String P5 = getRadioCroupValue(rgNivelResp5);
-            String P6 = getRadioCroupValue(rgNivelResp6);
-            String P7 = getRadioCroupValue(rgNivelResp7);
-            String P8 = getRadioCroupValue(rgNivelResp8);
-            String P9 = getRadioCroupValue(rgNivelResp9);
-            String P10 = getRadioCroupValue(rgNivelResp10);
+            String P1 = getRadioGroupValue(rgNivelResp1);
+            String P2 = getRadioGroupValue(rgNivelResp2);
+            String P3 = getRadioGroupValue(rgNivelResp3);
+            String P4 = getRadioGroupValue(rgNivelResp4);
+            String P5 = getRadioGroupValue(rgNivelResp5);
+            String P6 = getRadioGroupValue(rgNivelResp6);
+            String P7 = getRadioGroupValue(rgNivelResp7);
+            String P8 = getRadioGroupValue(rgNivelResp8);
+            String P9 = getRadioGroupValue(rgNivelResp9);
+            String P10 = getRadioGroupValue(rgNivelResp10);
 
             String PuntajeJuego = etResultPCognitiva.getText().toString();
 
-
+            getCheckBoxValues();
 
             // Enviar de vuelta los resultados a DeviceMenuActivity
             Intent resultIntent = new Intent();
             resultIntent.putExtra("Nombre", nombre);
+            resultIntent.putExtra("Edad", Edad);
+            resultIntent.putExtra("Sexo", Sexo);
+            resultIntent.putExtra("Cargo", Cargo);
             resultIntent.putExtra("respuesta1", P1);
             resultIntent.putExtra("respuesta2", P2);
             resultIntent.putExtra("respuesta3", P3);
@@ -79,6 +153,10 @@ public class Cuestionario extends Activity {
             resultIntent.putExtra("respuesta9", P9);
             resultIntent.putExtra("respuesta10", P10);
             resultIntent.putExtra("puntajeJuego", PuntajeJuego);
+
+            resultIntent.putStringArrayListExtra("FactoresSeleccionados", new ArrayList<>(factoresSeleccionados));
+
+
             setResult(Activity.RESULT_OK, resultIntent);
             finish(); // Cierra esta pantalla
         });
