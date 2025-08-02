@@ -140,6 +140,7 @@ public class DeviceMenuActivity extends ConnectedActivity {
   String res10 = " ";
 
   String puntajeJuego = "";
+  String resA="", resB="", resC="";
 
   ArrayList<String> factoresSeleccionados;
   String factoresSeleccionadosJson = null;
@@ -241,6 +242,9 @@ private void sendMQTTMessage(SampleData data){
         if (res9 == null) res9 = "N/A";
         if (res10 == null) res10 = "N/A";
         if (puntajeJuego == null) puntajeJuego = "N/A";
+        if (resA == null) resA = "N/A";
+        if (resB == null) resB = "N/A";
+        if (resC == null) resC = "N/A";
         if (factoresSeleccionados != null && !factoresSeleccionados.isEmpty()) {
             // Poner comillas a cada elemento
           ArrayList<String> quoted = new ArrayList<>();
@@ -282,6 +286,9 @@ private void sendMQTTMessage(SampleData data){
                 + ",\"R8\":\""+ res8 + "\""
                 + ",\"R9\":\""+ res9 + "\""
                 + ",\"R10\":\""+ res10 + "\""
+                + ",\"RA\":\""+ resA + "\""
+                + ",\"RB\":\""+ resB + "\""
+                + ",\"RC\":\""+ resC + "\""
                 + ",\"PuntajeJuego\":\""+ puntajeJuego +"\""
                 + ",\"FactoresSelecionados\":" + factoresSeleccionadosJson
                 + "}";
@@ -882,6 +889,9 @@ private void solicitarExclusionBateria() {
         res9 = data.getStringExtra("respuesta9");
         res10 = data.getStringExtra("respuesta10");
         puntajeJuego = data.getStringExtra("puntajeJuego");
+        resA = data.getStringExtra("respuestaA");
+        resB = data.getStringExtra("respuestaB");
+        resC = data.getStringExtra("respuestaC");
         factoresSeleccionados = data.getStringArrayListExtra("FactoresSeleccionados");
 
         //estado = data.getStringExtra("respuestaTexto");

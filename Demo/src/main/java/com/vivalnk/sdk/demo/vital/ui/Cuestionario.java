@@ -22,7 +22,7 @@ public class Cuestionario extends Activity {
             rgNivelResp7, rgNivelResp8, rgNivelResp9, rgNivelResp10, rgFaseJornada, rgExigenciaFisica,
             rgCargaMental;
 
-    CheckBox cbCalor, cbPostura, cbRuido, cbMovimiento, cbRepetitivas, cbNinguno;
+    CheckBox cbCalor, cbPostura, cbRuido, cbMovimiento, cbRepetitivas, cbNinguno, rbInicioTurno, rbMitadTurno, rbFinalTurno, rbPausa, rbRetornoPausa;
     EditText etNombre, etEdad, etSexo, etCargo, etResultPCognitiva;
     Button btnGuardar;
 
@@ -34,7 +34,7 @@ public class Cuestionario extends Activity {
             RadioButton rb = findViewById(groupId);
             return rb.getText().toString();
         }
-        return "";
+        return "NS";
     }
     private void getCheckBoxValues(){
         if (cbCalor.isChecked()) {
@@ -57,6 +57,7 @@ public class Cuestionario extends Activity {
             factoresSeleccionados.add("ninguno");
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,11 +86,11 @@ public class Cuestionario extends Activity {
         rgNivelResp10 = findViewById(R.id.rgNivelResp10);
         etResultPCognitiva = findViewById(R.id.etResultPCognitiva);
 
-        rgFaseJornada   = findViewById(R.id.rgFaseJornada);
+        rgFaseJornada       = findViewById(R.id.rgFaseJornada);
         rgExigenciaFisica   = findViewById(R.id.rgExigenciaFisica);
-        rgCargaMental   = findViewById(R.id.rgCargaMental);
-        // CheckBoxes
+        rgCargaMental       = findViewById(R.id.rgCargaMental);
 
+        // CheckBoxes
         btnGuardar = findViewById(R.id.btnGuardarCuestionario);
 
         cbNinguno.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -134,6 +135,10 @@ public class Cuestionario extends Activity {
 
             String PuntajeJuego = etResultPCognitiva.getText().toString();
 
+            String PA = getRadioGroupValue(rgFaseJornada);
+            String PB = getRadioGroupValue(rgExigenciaFisica);
+            String PC = getRadioGroupValue(rgCargaMental);
+
             getCheckBoxValues();
 
             // Enviar de vuelta los resultados a DeviceMenuActivity
@@ -153,9 +158,11 @@ public class Cuestionario extends Activity {
             resultIntent.putExtra("respuesta9", P9);
             resultIntent.putExtra("respuesta10", P10);
             resultIntent.putExtra("puntajeJuego", PuntajeJuego);
+            resultIntent.putExtra("respuestaA", PA);
+            resultIntent.putExtra("respuestaB", PB);
+            resultIntent.putExtra("respuestaC", PC);
 
             resultIntent.putStringArrayListExtra("FactoresSeleccionados", new ArrayList<>(factoresSeleccionados));
-
 
             setResult(Activity.RESULT_OK, resultIntent);
             finish(); // Cierra esta pantalla
