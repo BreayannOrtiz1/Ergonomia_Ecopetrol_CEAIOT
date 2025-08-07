@@ -53,9 +53,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -85,6 +88,8 @@ public class DeviceMenuActivity extends ConnectedActivity {
 
   @BindView(R.id.btnAbrirCuestionario)
   Button mBtnCuestionario;
+  @BindView(R.id.btnStartSampling)
+  Button btnStartSampling;
   @BindView(R.id.btnDetail)
   Button mBtnDetail;
   @BindView(R.id.tvStatus)
@@ -103,30 +108,39 @@ public class DeviceMenuActivity extends ConnectedActivity {
   String NRF_CONNECT_CLASS = "com.vivalnk.sdk.engineer.ui.EngineerAcitivity";
   
   //MQTT configuration
-  
   String iotHubName = "ingenieriaiothub";
-  String deviceId = "ECG_ANDROID";
+  // ECG_C740209, ECG_C740200, ECG_C740211
+  String deviceId_SN_G = "ECG_204"; // Extraido de azure IoT Explorer.
   String brokerUrl = "ssl://" + iotHubName + ".azure-devices.net:8883";
-  String topic = "devices/" + deviceId + "/messages/events/";
-  String username_mqtt = iotHubName + ".azure-devices.net/" + deviceId + "/api-version=2018-06-30";
-  // SAS Token CORRECTO (sin doble SharedAccessSignature)
-  String sasToken = "SharedAccessSignature sr=ingenieriaiothub.azure-devices.net%2Fdevices%2FECG_ANDROID&sig=PmfPmJmMATqkC8frB8tq4dgbaXTEXO2iTvmTMhVzdfQ%3D&se=1771883740";
-  Boolean ToasMqtt = true;
-  private boolean isSendingMQTT = false;
+  String topic = "devices/" + deviceId_SN_G + "/messages/events/";
+  String username_mqtt = iotHubName + ".azure-devices.net/" + deviceId_SN_G + "/api-version=2018-06-30";
+
+  // SAS Token CORRECTO (sin doble SharedAccessSignature). Hasta Enero 2026:
+  // C740200:
+  //String sasToken = "SharedAccessSignature sr=ingenieriaiothub.azure-devices.net%2Fdevices%2FECG_C740200&sig=JWjM9d6wGqA7QxXX5WvpDvz1WXt2lDP3dfVyYPw68O8%3D&se=1772352730";
+  // C740211:
+  //String sasToken = "SharedAccessSignature sr=ingenieriaiothub.azure-devices.net%2Fdevices%2FECG_C740211&sig=SAALVClspdlhy7Pkotfe6ujCQroto9SD1aeXRdwpAaQ%3D&se=1772353766";
+  // C740209:
+  String sasToken = "SharedAccessSignature sr=ingenieriaiothub.azure-devices.net%2Fdevices%2FECG_204&sig=MXvcQb7ghD%2FBANBgETG13rjkREP%2FSH%2FeI%2BRrXmZib8g%3D&se=1772586390";
+  private boolean sendMQTT = false;
   private MqttAndroidClient mqttClient;
+  private final MqttConnectOptions options = new MqttConnectOptions();
+
 
   // Control Variables
   private Integer lastBatteryLevel = null;
-  private static final long MQTT_SEND_TIMEOUT_MS = 30_000; // 30 segundos
+  private static final long MQTT_SEND_TIMEOUT_MS = 30_000; // 30 segundos, Alerta problema de transmisión.
   private Handler mqttTimeoutHandler = new Handler(Looper.getMainLooper());
   private Runnable mqttTimeoutRunnable;
+  private int mqttRetryCount = 0;
+  private static final int MAX_RETRIES = 5;
+  // Variable de control para evitar enviar duplicados. Al parecer onDataupdate sellama 2 veces por mensaje.
+  private long lastSentTimestamp = -1;
 
   // Questionnaire
-
-  //  Respuestas
   String nombre = " ";
-  String edad = "";
-  String sexo = "";
+  String edad = " ";
+  String sexo = " ";
   String cargo = "";
   String res1 = " ";
   String res2 = " ";
@@ -138,14 +152,10 @@ public class DeviceMenuActivity extends ConnectedActivity {
   String res8 = " ";
   String res9 = " ";
   String res10 = " ";
-
   String puntajeJuego = "";
   String resA="", resB="", resC="";
-
   ArrayList<String> factoresSeleccionados;
   String factoresSeleccionadosJson = null;
-
-
 
   private void restartMqttTimeoutTimer() {
     if (mqttTimeoutRunnable != null) {
@@ -156,7 +166,7 @@ public class DeviceMenuActivity extends ConnectedActivity {
         public void run() {
             // Notificación de alerta por timeout
             mNotificationUtils.sendNotification(
-                "Alerta de transmisión",
+                "Alerta problema de transmisión",
                 "No se están enviando datos por MQTT. Verifica la conexión o el sensor." 
             );
         }
@@ -164,14 +174,14 @@ public class DeviceMenuActivity extends ConnectedActivity {
     mqttTimeoutHandler.postDelayed(mqttTimeoutRunnable, MQTT_SEND_TIMEOUT_MS);
 }
 
-private void sendMQTTMessage(SampleData data){
+  private void sendMQTTMessage(SampleData data){
     try {
         // 1. TimeStamp
         long timestamp = data.getTime();
         // 2. DeviceID
         String deviceID = data.getDeviceID();
         // 3. DeviceSN
-        String deviceSN = mDevice.getSn(); // Asumiendo que mDevice está disponible
+        String deviceSN = data.getDeviceSN();// mDevicesn. Asumiendo que mDevice está disponible
         // 4. HR
         Integer hr = data.getHR();
         // 5. RR
@@ -256,8 +266,6 @@ private void sendMQTTMessage(SampleData data){
             factoresSeleccionadosJson = "[]";
             Log.d("MQTT", "No se seleccionaron factores.");
         }
-
-
         String payload = "{"
                 + "\"TimeStamp\":" + timestamp
                 + ",\"DeviceID\":\"" + deviceID + "\""
@@ -297,12 +305,61 @@ private void sendMQTTMessage(SampleData data){
         message.setQos(1);
         message.setRetained(false);
         mqttClient.publish(topic, message);
-
         restartMqttTimeoutTimer(); // Reiniciar el temporizador de timeout, se utiliza para revisar si se estan enviando mensajes MQTT cada X time
     } catch (MqttException e) {
         showToast("Error publishing message: " + e.getMessage());
     }
 }
+  private void connectMQTT(MqttAndroidClient mqttClient, MqttConnectOptions options, String topic, String deviceSN) {
+        try {
+            mqttClient.connect(options, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+
+                    showToast("Connected to MQTT broker");
+                    String timeStr = String.valueOf(System.currentTimeMillis() / 1000);     //// IMPORTANTE cambiar calve, no espacios {Device_ID}
+                    String payload = "{\"TimeStamp\": \""+ timeStr +"\",\"msg\": \"Start to send-MQTT\", \"Device_SN\":\""+deviceId_SN_G+"\"}"; // deviceId_SN_G es una variable global, definida al inicio de la clase, no se lee directamente del dispositivo, esto se hace para saber si la configuracion del dispositivo corresponde al sensor. Ya que la trama que se envia lee directamente el SN del sensor, podria ser diferente
+
+                    MqttMessage message = new MqttMessage(payload.getBytes());
+                    message.setQos(1);      //REvisar si sepuede utilizar QoS 0, evitar duplicados pero se pueden perder datos
+                    message.setRetained(false);
+                    // Send message to the topic
+                    try {
+                        mqttClient.publish(topic, message, null, new IMqttActionListener(){
+                            @Override
+                            public void onSuccess(IMqttToken asyncActionToken) {
+                                showToast("Message published to topic: " + topic);
+                            }
+                            @Override
+                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                                showToast("Failed to publish message: " + exception.getMessage());
+                            }
+                        });
+                    } catch (MqttException e) {
+                        showToast("Error publishing message: " + e.getMessage());
+                    }
+
+                }
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    mqttRetryCount++;
+                    showToast("MQTT connection failed. Attempt " + mqttRetryCount + "/" + MAX_RETRIES);
+
+                    if (mqttRetryCount < MAX_RETRIES) {
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            connectMQTT(mqttClient, options, topic, deviceSN);
+                        }, 3000); // espera 3 segundos antes del próximo intento
+                    } else {
+                        showToast("Could not connect to MQTT broker after " + MAX_RETRIES + " attempts.");
+                    }
+                }
+            });
+        } catch (MqttException e) {
+            showToast("Failed to CONNECT to MQTT broker: " + e.getMessage());
+            //throw new RuntimeException(e);
+        }
+    }
+
   @Subscribe
   public void onDataUpdate(SampleData data) {
     if (!data.getDeviceID().equals(mDevice.getId())) {
@@ -312,8 +369,12 @@ private void sendMQTTMessage(SampleData data){
         @Override
         public void run() {
             mDataLogView.updateLog(data.toSimpleString());
-            if (isSendingMQTT && mqttClient.isConnected()) {
-                sendMQTTMessage(data);
+            if (sendMQTT && mqttClient.isConnected() && mqttClient != null) {
+                long ts = data.getTime();
+                if(ts != lastSentTimestamp){
+                    lastSentTimestamp = ts;
+                    sendMQTTMessage(data);
+                }
 
             }
         }
@@ -350,64 +411,58 @@ private void sendMQTTMessage(SampleData data){
     super.onCreate(savedInstanceState);
     mNotificationUtils = new NotificationUtils(this.getApplicationContext());
     initView();
-    
+    execute(CommandType.eraseFlash);
+    execute(CommandType.eraseUserInfoFromFlash);
+    solicitarExclusionBateria();
+
+    if (mDevice == null) {
+      showToast("Error: mDevice es null. Se requiere reiniciar la app.");
+      finish(); // Cierra la actividad de forma segura
+      return;
+    }
     mBtnCuestionario.setOnClickListener(v -> {
         Intent intent = new Intent(DeviceMenuActivity.this, Cuestionario.class);
         startActivityForResult(intent, 101); // Cambia de pantalla
     });
 
-    solicitarExclusionBateria();
-
     // Initialize MQTT client
-    String Client_ID_MQTT_Sensor = deviceId;
-    mqttClient = new MqttAndroidClient(getApplicationContext(), brokerUrl, Client_ID_MQTT_Sensor);
+    if (mqttClient == null) {
+      mqttClient = new MqttAndroidClient(getApplicationContext(), brokerUrl, deviceId_SN_G);
+    }
+    mqttClient.setCallback(new MqttCallbackExtended() {
+      @Override
+      public void connectComplete(boolean reconnect, String serverURI) {
+          showToast("MQTT Connected" + (reconnect ? " (Reconnected)" : ""));
+          btnStartSampling.setVisibility((View.VISIBLE));
+      }
 
-    MqttConnectOptions options = new MqttConnectOptions();
+      @Override
+      public void connectionLost(Throwable cause) {
+          showToast("MQTT Disconnected: " + cause.getMessage());
+          mqttRetryCount = 0; // reinicia el contador
+          connectMQTT(mqttClient, options, topic, deviceId_SN_G); // reintento inmediato
+          //execute(CommandType.stopSampling);
+          //btnStartSampling.setVisibility((View.INVISIBLE));
+      }
+
+      @Override
+      public void messageArrived(String topic, MqttMessage message) {
+          // mensaje recibido
+      }
+
+      @Override
+      public void deliveryComplete(IMqttDeliveryToken token) {
+          // mensaje entregado
+      }
+    });     // Maneja re-conexion.
     options.setCleanSession(true);
     options.setUserName(username_mqtt);
     options.setPassword(sasToken.toCharArray());
     options.setSocketFactory(SSLSocketFactory.getDefault());
-    
-    try {
-        mqttClient.connect(options, null, new IMqttActionListener() {
-            @Override
-            public void onSuccess(IMqttToken asyncActionToken) {
-                if(ToasMqtt){
-                    Boolean ToasMqtt = false;
-                    showToast("Connected to MQTT broker");
-                    // Send message to the topic
-                    try {
-                        String payload = "{\"msg\": \"Start to send-MQTT\", \"Device ID\":\""+mDevice.getId()+"\"}";
-                        MqttMessage message = new MqttMessage(payload.getBytes());
-                        message.setQos(1);
-                        message.setRetained(false);
-                        mqttClient.publish(topic, message, null, new IMqttActionListener(){
-                            @Override
-                            public void onSuccess(IMqttToken asyncActionToken) {
-                                showToast("Message published to topic: " + topic);
-                            }
-                            @Override
-                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                                showToast("Failed to publish message: " + exception.getMessage());
-                            }
-                        });
-                    } catch (MqttException e) {
-                        showToast("Error publishing message: " + e.getMessage());
-                    }
-                }
-            }
-            @Override
-            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                showToast("Failed to connect to MQTT broker: " + exception.getMessage());
-            }
-        });
-    } catch (MqttException e) {
-        showToast("Failed to CONNECT to MQTT broker: " + e.getMessage());
-        throw new RuntimeException(e);
-    }
+    connectMQTT(mqttClient,options, topic, mDevice.getSn());    // Maneja re-intentos.
   }
 
-private void solicitarExclusionBateria() {
+  private void solicitarExclusionBateria() {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
         PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
         String packageName = getPackageName();
@@ -418,7 +473,8 @@ private void solicitarExclusionBateria() {
         }
     }
 }
-  private void initView() {
+  private void initView(){
+    btnStartSampling.setVisibility((View.INVISIBLE));
     if (DeviceInfoUtils.isVV310(mDevice)) {
       btnUploadFlash.setVisibility(View.VISIBLE);
       btnCancelUpload.setVisibility(View.VISIBLE);
@@ -449,22 +505,31 @@ private void solicitarExclusionBateria() {
   protected Layout getLayout() {
     return Layout.createLayoutByID(R.layout.activity_device_detail);
   }
-
+  private void safelyCloseMqttClient() {
+    if (mqttClient != null) {
+        try {
+            if (mqttClient.isConnected()) {
+                mqttClient.disconnect();
+            }
+            mqttClient.close();
+            mqttClient = null; // para evitar dobles intentos
+        } catch (MqttException e) {
+            Log.e("MQTT", "Error closing client", e);
+        }
+    }
+    }
   @Override
   protected void onDestroy() {
+      // Detener el Foreground Service
+      Intent serviceIntent = new Intent(this, MqttForegroundService.class);
+      stopService(serviceIntent);
+      safelyCloseMqttClient();
+      if (mqttTimeoutRunnable != null) {
+          mqttTimeoutHandler.removeCallbacks(mqttTimeoutRunnable);
+      }
     super.onDestroy();
     mNotificationUtils = null;
-
-      //isSendingMQTT = false;
-      // Detener el Foreground Service
-      //Intent serviceIntent = new Intent(this, MqttForegroundService.class);
-      //stopService(serviceIntent);
-      // Cancela el timer de timeout
-      //if (mqttTimeoutRunnable != null) {
-      //   mqttTimeoutHandler.removeCallbacks(mqttTimeoutRunnable);
-      //}
   }
-
   @OnClick(R.id.btnDetail)
   void clickBtnDetail() {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -484,70 +549,12 @@ private void solicitarExclusionBateria() {
     dialog.show();
   }
 
-  //int count = 0;
-  //private void requestRTTReadSN() {
-  //  count = 0;
-  //  CommandRequest readSnFromPatch = new CommandRequest.Builder().setType(CommandAllType.readSnFromPatch).build();
-  //  execute(readSnFromPatch, new DefaultCallback(){
-  //    @Override
-  //    public void onComplete(Map<String, Object> data) {
-  //      super.onComplete(data);
-  //      count++;
-  //      if (count < 100) {
-  //        execute(readSnFromPatch, this);
-  //      }else {
-  //        count = 0;
-  //        requestRTTReadInfo();
-  //      }
-  //    }
-  //  });
-  //}
-  //
-  //private void requestRTTReadInfo() {
-  //  CommandRequest readUserInfoFromFlash = new CommandRequest.Builder().setType(CommandAllType.readUserInfoFromFlash).build();
-  //  execute(readUserInfoFromFlash, new DefaultCallback(){
-  //    @Override
-  //    public void onComplete(Map<String, Object> data) {
-  //      super.onComplete(data);
-  //      count++;
-  //      if (count < 100) {
-  //        execute(readUserInfoFromFlash, this);
-  //      }else {
-  //        count = 0;
-  //        requestRTTReadDeviceInfo();
-  //      }
-  //    }
-  //  });
-  //}
-  //private void requestRTTReadDeviceInfo() {
-  //  CommandRequest readDeviceInfo = new CommandRequest.Builder().setType(CommandAllType.readDeviceInfo).build();
-  //  execute(readDeviceInfo, new DefaultCallback(){
-  //    @Override
-  //    public void onComplete(Map<String, Object> data) {
-  //      super.onComplete(data);
-  //      count++;
-  //      if (count < 100) {
-  //        execute(readDeviceInfo, this);
-  //      }else {
-  //        count = 0;
-  //      }
-  //    }
-  //  });
-  //}
 
   @OnClick(R.id.btnDisconnect)
   void clickBtnDisconnect() {
     showProgressDialog("Disconnecting...");
-    isSendingMQTT = false;
-    // Detener el Foreground Service
-    Intent serviceIntent = new Intent(this, MqttForegroundService.class);
-    stopService(serviceIntent);
-    // Cancela el timer de timeout
-    if (mqttTimeoutRunnable != null) {
-        mqttTimeoutHandler.removeCallbacks(mqttTimeoutRunnable);
-    }
+    sendMQTT = true;
     DeviceManager.getInstance().disconnect(mDevice);
-
   }
 
   @OnClick(R.id.btnReadPatchVersion)
@@ -645,7 +652,7 @@ private void solicitarExclusionBateria() {
   @OnClick(R.id.btnStartSampling)
   public void clickStartSampling(Button view) {
     execute(CommandType.startSampling);
-    isSendingMQTT = true;
+    sendMQTT = true;
     // Iniciar el Foreground Service
     Intent serviceIntent = new Intent(this, MqttForegroundService.class);
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -657,15 +664,12 @@ private void solicitarExclusionBateria() {
 
   @OnClick(R.id.btnStopSampling)
   public void clickStopSampling(Button view) {
-    execute(CommandType.stopSampling);
-    isSendingMQTT = false;
-    // Detener el Foreground Service
-    Intent serviceIntent = new Intent(this, MqttForegroundService.class);
-    stopService(serviceIntent);
+    sendMQTT = false;
      // Cancela el timer de timeout
     if (mqttTimeoutRunnable != null) {
         mqttTimeoutHandler.removeCallbacks(mqttTimeoutRunnable);
     }
+    execute(CommandType.stopSampling);
   }
 
   /*@OnClick(R.id.btnShutDown)
@@ -893,22 +897,7 @@ private void solicitarExclusionBateria() {
         resB = data.getStringExtra("respuestaB");
         resC = data.getStringExtra("respuestaC");
         factoresSeleccionados = data.getStringArrayListExtra("FactoresSeleccionados");
-
-        //estado = data.getStringExtra("respuestaTexto");
     }
-    /*if (requestCode == ACTIVITY_CHOOSE_FILE) {
-      if (resultCode != RESULT_OK || data == null) {
-        isOTAing = false;
-      } else {
-        String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-        startActivityForResult(OTAActivity.newIntent(this, mDevice, filePath), OTA_RET_CODE);
-        isOTAing = true;
-      }
-    } else if (requestCode == OTA_RET_CODE) {
-      isOTAing = false;
-    } else {
-      finish();
-    }*/
   }
 
   @OnClick(R.id.btnEngineerModule)

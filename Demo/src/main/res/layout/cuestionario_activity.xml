@@ -592,6 +592,12 @@
             android:text="Calor o temperatura elevada" />
 
         <CheckBox
+            android:id="@+id/cbFrio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Frio o temperatura baja" />
+
+        <CheckBox
             android:id="@+id/cbPostura"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

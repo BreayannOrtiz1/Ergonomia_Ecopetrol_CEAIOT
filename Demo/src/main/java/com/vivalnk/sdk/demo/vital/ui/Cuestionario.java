@@ -22,7 +22,7 @@ public class Cuestionario extends Activity {
             rgNivelResp7, rgNivelResp8, rgNivelResp9, rgNivelResp10, rgFaseJornada, rgExigenciaFisica,
             rgCargaMental;
 
-    CheckBox cbCalor, cbPostura, cbRuido, cbMovimiento, cbRepetitivas, cbNinguno, rbInicioTurno, rbMitadTurno, rbFinalTurno, rbPausa, rbRetornoPausa;
+    CheckBox cbCalor, cbFrio, cbPostura, cbRuido, cbMovimiento, cbRepetitivas, cbNinguno;
     EditText etNombre, etEdad, etSexo, etCargo, etResultPCognitiva;
     Button btnGuardar;
 
@@ -40,6 +40,9 @@ public class Cuestionario extends Activity {
         if (cbCalor.isChecked()) {
             factoresSeleccionados.add("calor");
         }
+        if (cbFrio.isChecked()){
+            factoresSeleccionados.add("frio");
+        }
         if (cbPostura.isChecked()) {
             factoresSeleccionados.add("postura_incomoda");
         }
@@ -47,10 +50,10 @@ public class Cuestionario extends Activity {
             factoresSeleccionados.add("ruido");
         }
         if (cbMovimiento.isChecked()) {
-            factoresSeleccionados.add("movimiento");
+            factoresSeleccionados.add("movimiento-constante");
         }
         if (cbRepetitivas.isChecked()) {
-            factoresSeleccionados.add("repetitivas");
+            factoresSeleccionados.add("tareas-repetitivas");
         }
         if (cbNinguno.isChecked()) {
             factoresSeleccionados.clear(); // ignorar todo lo anterior si elige 'Ninguno'
@@ -63,6 +66,7 @@ public class Cuestionario extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cuestionario_activity); // conecta con el XML
         cbCalor = findViewById(R.id.cbCalor);
+        cbFrio = findViewById(R.id.cbFrio);
         cbPostura = findViewById(R.id.cbPostura);
         cbRuido = findViewById(R.id.cbRuido);
         cbMovimiento = findViewById(R.id.cbMovimiento);
@@ -96,6 +100,7 @@ public class Cuestionario extends Activity {
         cbNinguno.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 cbCalor.setChecked(false);
+                cbFrio.setChecked(false);
                 cbPostura.setChecked(false);
                 cbRuido.setChecked(false);
                 cbMovimiento.setChecked(false);
@@ -109,6 +114,7 @@ public class Cuestionario extends Activity {
         };
 
         cbCalor.setOnClickListener(desmarcarNingunoListener);
+        cbFrio.setOnClickListener(desmarcarNingunoListener);
         cbPostura.setOnClickListener(desmarcarNingunoListener);
         cbRuido.setOnClickListener(desmarcarNingunoListener);
         cbMovimiento.setOnClickListener(desmarcarNingunoListener);
