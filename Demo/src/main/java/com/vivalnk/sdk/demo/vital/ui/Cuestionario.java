@@ -43,18 +43,18 @@ public class Cuestionario extends Activity {
         if (cbFrio.isChecked()){
             factoresSeleccionados.add("frio");
         }
-        if (cbPostura.isChecked()) {
-            factoresSeleccionados.add("postura_incomoda");
-        }
+//        if (cbPostura.isChecked()) {
+//            factoresSeleccionados.add("postura_incomoda");
+//        }
         if (cbRuido.isChecked()) {
             factoresSeleccionados.add("ruido");
         }
-        if (cbMovimiento.isChecked()) {
-            factoresSeleccionados.add("movimiento-constante");
-        }
-        if (cbRepetitivas.isChecked()) {
-            factoresSeleccionados.add("tareas-repetitivas");
-        }
+//        if (cbMovimiento.isChecked()) {
+//            factoresSeleccionados.add("movimiento-constante");
+//        }
+//        if (cbRepetitivas.isChecked()) {
+//            factoresSeleccionados.add("tareas-repetitivas");
+//        }
         if (cbNinguno.isChecked()) {
             factoresSeleccionados.clear(); // ignorar todo lo anterior si elige 'Ninguno'
             factoresSeleccionados.add("ninguno");
@@ -67,10 +67,10 @@ public class Cuestionario extends Activity {
         setContentView(R.layout.cuestionario_activity); // conecta con el XML
         cbCalor = findViewById(R.id.cbCalor);
         cbFrio = findViewById(R.id.cbFrio);
-        cbPostura = findViewById(R.id.cbPostura);
+        //cbPostura = findViewById(R.id.cbPostura);
         cbRuido = findViewById(R.id.cbRuido);
-        cbMovimiento = findViewById(R.id.cbMovimiento);
-        cbRepetitivas = findViewById(R.id.cbRepetitivas);
+        //cbMovimiento = findViewById(R.id.cbMovimiento);
+        //cbRepetitivas = findViewById(R.id.cbRepetitivas);
         cbNinguno = findViewById(R.id.cbNinguno);
 
         etNombre    =  findViewById(R.id.etNombre);
@@ -91,8 +91,8 @@ public class Cuestionario extends Activity {
         etResultPCognitiva = findViewById(R.id.etResultPCognitiva);
 
         rgFaseJornada       = findViewById(R.id.rgFaseJornada);
-        rgExigenciaFisica   = findViewById(R.id.rgExigenciaFisica);
-        rgCargaMental       = findViewById(R.id.rgCargaMental);
+        //rgExigenciaFisica   = findViewById(R.id.rgExigenciaFisica);
+        //rgCargaMental       = findViewById(R.id.rgCargaMental);
 
         // CheckBoxes
         btnGuardar = findViewById(R.id.btnGuardarCuestionario);
@@ -115,10 +115,10 @@ public class Cuestionario extends Activity {
 
         cbCalor.setOnClickListener(desmarcarNingunoListener);
         cbFrio.setOnClickListener(desmarcarNingunoListener);
-        cbPostura.setOnClickListener(desmarcarNingunoListener);
+        //cbPostura.setOnClickListener(desmarcarNingunoListener);
         cbRuido.setOnClickListener(desmarcarNingunoListener);
-        cbMovimiento.setOnClickListener(desmarcarNingunoListener);
-        cbRepetitivas.setOnClickListener(desmarcarNingunoListener);
+        //cbMovimiento.setOnClickListener(desmarcarNingunoListener);
+        //cbRepetitivas.setOnClickListener(desmarcarNingunoListener);
 
         // Cuando se presiona "Guardar"
         //////////////////////////////////////
@@ -142,8 +142,8 @@ public class Cuestionario extends Activity {
             String PuntajeJuego = etResultPCognitiva.getText().toString();
 
             String PA = getRadioGroupValue(rgFaseJornada);
-            String PB = getRadioGroupValue(rgExigenciaFisica);
-            String PC = getRadioGroupValue(rgCargaMental);
+            //String PB = getRadioGroupValue(rgCargaMental);
+            //String PC = getRadioGroupValue(rgCargaMental);
 
             getCheckBoxValues();
 
@@ -165,10 +165,12 @@ public class Cuestionario extends Activity {
             resultIntent.putExtra("respuesta10", P10);
             resultIntent.putExtra("puntajeJuego", PuntajeJuego);
             resultIntent.putExtra("respuestaA", PA);
-            resultIntent.putExtra("respuestaB", PB);
-            resultIntent.putExtra("respuestaC", PC);
+            //resultIntent.putExtra("respuestaB", PB);
+            //resultIntent.putExtra("respuestaC", PC);
 
             resultIntent.putStringArrayListExtra("FactoresSeleccionados", new ArrayList<>(factoresSeleccionados));
+
+            resultIntent.putExtra("saveAt", System.currentTimeMillis());
 
             setResult(Activity.RESULT_OK, resultIntent);
             finish(); // Cierra esta pantalla

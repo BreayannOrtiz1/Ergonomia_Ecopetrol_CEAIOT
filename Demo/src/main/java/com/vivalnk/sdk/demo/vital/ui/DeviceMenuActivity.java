@@ -88,6 +88,19 @@ public class DeviceMenuActivity extends ConnectedActivity {
 
   @BindView(R.id.btnAbrirCuestionario)
   Button mBtnCuestionario;
+    @BindView(R.id.tvLastFormTime) TextView tvLastFormTime;
+    @BindView(R.id.tvMqttIndicatorDot) TextView tvMqttIndicatorDot;
+    @BindView(R.id.tvMqttIndicatorDetail) TextView tvMqttIndicatorDetail;
+    private static final int REQ_QUESTIONNAIRE = 2001;
+    private long lastFormSavedAt = 0L;
+    private long lastMqttAckAt = 0L;
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
+    private final Runnable mqttIndicatorTicker = new Runnable() {
+        @Override public void run() {
+            updateMqttIndicator();
+            uiHandler.postDelayed(this, 1000);
+        }
+    };
   @BindView(R.id.btnStartSampling)
   Button btnStartSampling;
   @BindView(R.id.btnDetail)
@@ -110,7 +123,7 @@ public class DeviceMenuActivity extends ConnectedActivity {
   //MQTT configuration
   String iotHubName = "ingenieriaiothub";
   // ECG_C740209, ECG_C740200, ECG_C740211
-  String deviceId_SN_G = "ECG_204"; // Extraido de azure IoT Explorer.
+  String deviceId_SN_G = "ECG_C740209"; // Extraido de azure IoT Explorer.
   String brokerUrl = "ssl://" + iotHubName + ".azure-devices.net:8883";
   String topic = "devices/" + deviceId_SN_G + "/messages/events/";
   String username_mqtt = iotHubName + ".azure-devices.net/" + deviceId_SN_G + "/api-version=2018-06-30";
@@ -120,8 +133,9 @@ public class DeviceMenuActivity extends ConnectedActivity {
   //String sasToken = "SharedAccessSignature sr=ingenieriaiothub.azure-devices.net%2Fdevices%2FECG_C740200&sig=JWjM9d6wGqA7QxXX5WvpDvz1WXt2lDP3dfVyYPw68O8%3D&se=1772352730";
   // C740211:
   //String sasToken = "SharedAccessSignature sr=ingenieriaiothub.azure-devices.net%2Fdevices%2FECG_C740211&sig=SAALVClspdlhy7Pkotfe6ujCQroto9SD1aeXRdwpAaQ%3D&se=1772353766";
-  // C740209:
-  String sasToken = "SharedAccessSignature sr=ingenieriaiothub.azure-devices.net%2Fdevices%2FECG_204&sig=MXvcQb7ghD%2FBANBgETG13rjkREP%2FSH%2FeI%2BRrXmZib8g%3D&se=1772586390";
+  //  C740209:
+  //String sasToken = "SharedAccessSignature sr=ingenieriaiothub.azure-devices.net%2Fdevices%2FECG_C740209&sig=PHLD52rRxCypPeTxoEzLqUc8s77yHZkjeATJnUM5n5Y%3D&se=1791136107";
+  String sasToken = "SharedAccessSignature sr=ingenieriaiothub.azure-devices.net%2Fdevices%2FECG_C740209&sig=PHLD52rRxCypPeTxoEzLqUc8s77yHZkjeATJnUM5n5Y%3D&se=1791136107";
   private boolean sendMQTT = false;
   private MqttAndroidClient mqttClient;
   private final MqttConnectOptions options = new MqttConnectOptions();
@@ -153,9 +167,66 @@ public class DeviceMenuActivity extends ConnectedActivity {
   String res9 = " ";
   String res10 = " ";
   String puntajeJuego = "";
-  String resA="", resB="", resC="";
+  String resA=""/*, resB="", resC=""*/;
   ArrayList<String> factoresSeleccionados;
   String factoresSeleccionadosJson = null;
+
+  private void updateLastFormTime() {
+    if (tvLastFormTime == null) return;
+    if (lastFormSavedAt <= 0) {
+        tvLastFormTime.setText("Aún no se ha enviado el formulario: —");
+        return;
+    }
+    java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+    tvLastFormTime.setText("Último formulario enviado: " + df.format(new java.util.Date(lastFormSavedAt)));
+  }
+  private void updateMqttIndicator() {
+    if (tvMqttIndicatorDot == null || tvMqttIndicatorDetail == null) return;
+
+    boolean connected = (mqttClient != null && mqttClient.isConnected());
+    boolean sending = sendMQTT; // ya existe en tu clase
+    long now = System.currentTimeMillis();
+    boolean ackRecent = (lastMqttAckAt > 0) && (now - lastMqttAckAt < 5000); // ventana 5s
+
+    if (!connected) {
+        setDot("#9E9E9E"); // gris
+        tvMqttIndicatorDetail.setText("MQTT: desconectado");
+        return;
+    }
+    if (sending && ackRecent) {
+        setDot("#2E7D32"); // verde
+        tvMqttIndicatorDetail.setText("MQTT: enviando (OK)");
+    } else if (sending) {
+        setDot("#F9A825"); // amarillo
+        tvMqttIndicatorDetail.setText("MQTT: sin ACK reciente");
+    } else {
+        setDot("#1565C0"); // azul
+        tvMqttIndicatorDetail.setText("MQTT: conectado");
+    }
+  }
+
+  private void setDot(String colorHex) {
+        tvMqttIndicatorDot.setTextColor(android.graphics.Color.parseColor(colorHex));
+  }
+
+  @Override protected void onResume() {
+        super.onResume();
+        uiHandler.post(mqttIndicatorTicker);
+        updateLastFormTime();
+        updateMqttIndicator();
+  }
+  @Override protected void onPause() {
+        super.onPause();
+        uiHandler.removeCallbacks(mqttIndicatorTicker);
+  }
+
+    @Override protected void onStop() {
+        super.onStop();
+        // cancela timeout al salir de foreground
+        if (mqttTimeoutRunnable != null) {
+            mqttTimeoutHandler.removeCallbacks(mqttTimeoutRunnable);
+        }
+    }
 
   private void restartMqttTimeoutTimer() {
     if (mqttTimeoutRunnable != null) {
@@ -165,10 +236,13 @@ public class DeviceMenuActivity extends ConnectedActivity {
         @Override
         public void run() {
             // Notificación de alerta por timeout
-            mNotificationUtils.sendNotification(
-                "Alerta problema de transmisión",
-                "No se están enviando datos por MQTT. Verifica la conexión o el sensor." 
-            );
+            if(mNotificationUtils != null && !isFinishing()){
+                mNotificationUtils.sendNotification(
+                        "Alerta problema de transmisión",
+                        "No se están enviando datos por MQTT. Verifica la conexión o el sensor."
+                );
+            }
+
         }
     };
     mqttTimeoutHandler.postDelayed(mqttTimeoutRunnable, MQTT_SEND_TIMEOUT_MS);
@@ -253,8 +327,8 @@ public class DeviceMenuActivity extends ConnectedActivity {
         if (res10 == null) res10 = "N/A";
         if (puntajeJuego == null) puntajeJuego = "N/A";
         if (resA == null) resA = "N/A";
-        if (resB == null) resB = "N/A";
-        if (resC == null) resC = "N/A";
+        /*if (resB == null) resB = "N/A";
+        if (resC == null) resC = "N/A";*/
         if (factoresSeleccionados != null && !factoresSeleccionados.isEmpty()) {
             // Poner comillas a cada elemento
           ArrayList<String> quoted = new ArrayList<>();
@@ -295,8 +369,8 @@ public class DeviceMenuActivity extends ConnectedActivity {
                 + ",\"R9\":\""+ res9 + "\""
                 + ",\"R10\":\""+ res10 + "\""
                 + ",\"RA\":\""+ resA + "\""
-                + ",\"RB\":\""+ resB + "\""
-                + ",\"RC\":\""+ resC + "\""
+                /*+ ",\"RB\":\""+ resB + "\""
+                + ",\"RC\":\""+ resC + "\""*/
                 + ",\"PuntajeJuego\":\""+ puntajeJuego +"\""
                 + ",\"FactoresSelecionados\":" + factoresSeleccionadosJson
                 + "}";
@@ -434,13 +508,20 @@ public class DeviceMenuActivity extends ConnectedActivity {
       public void connectComplete(boolean reconnect, String serverURI) {
           showToast("MQTT Connected" + (reconnect ? " (Reconnected)" : ""));
           btnStartSampling.setVisibility((View.VISIBLE));
+          lastMqttAckAt = System.currentTimeMillis(); // conectado
+          updateMqttIndicator();
       }
 
       @Override
       public void connectionLost(Throwable cause) {
           showToast("MQTT Disconnected: " + cause.getMessage());
           mqttRetryCount = 0; // reinicia el contador
+          if (!sendMQTT || isFinishing() || isDestroyed()) {
+              return;
+          }
           connectMQTT(mqttClient, options, topic, deviceId_SN_G); // reintento inmediato
+          lastMqttAckAt = 0L;
+          updateMqttIndicator();
           //execute(CommandType.stopSampling);
           //btnStartSampling.setVisibility((View.INVISIBLE));
       }
@@ -453,6 +534,8 @@ public class DeviceMenuActivity extends ConnectedActivity {
       @Override
       public void deliveryComplete(IMqttDeliveryToken token) {
           // mensaje entregado
+          lastMqttAckAt = System.currentTimeMillis(); // publish confirmado
+          updateMqttIndicator();
       }
     });     // Maneja re-conexion.
     options.setCleanSession(true);
@@ -517,7 +600,7 @@ public class DeviceMenuActivity extends ConnectedActivity {
             Log.e("MQTT", "Error closing client", e);
         }
     }
-    }
+  }
   @Override
   protected void onDestroy() {
       // Detener el Foreground Service
@@ -553,7 +636,15 @@ public class DeviceMenuActivity extends ConnectedActivity {
   @OnClick(R.id.btnDisconnect)
   void clickBtnDisconnect() {
     showProgressDialog("Disconnecting...");
-    sendMQTT = true;
+    sendMQTT = false;
+      // cancela timeout si estaba armado
+      if (mqttTimeoutRunnable != null) {
+          mqttTimeoutHandler.removeCallbacks(mqttTimeoutRunnable);
+      }
+      // service si estaba activo
+      Intent serviceIntent = new Intent(this, MqttForegroundService.class);
+      stopService(serviceIntent);
+      safelyCloseMqttClient();
     DeviceManager.getInstance().disconnect(mDevice);
   }
 
@@ -894,9 +985,11 @@ public class DeviceMenuActivity extends ConnectedActivity {
         res10 = data.getStringExtra("respuesta10");
         puntajeJuego = data.getStringExtra("puntajeJuego");
         resA = data.getStringExtra("respuestaA");
-        resB = data.getStringExtra("respuestaB");
-        resC = data.getStringExtra("respuestaC");
+        //resB = data.getStringExtra("respuestaB");
+        //resC = data.getStringExtra("respuestaC");
         factoresSeleccionados = data.getStringArrayListExtra("FactoresSeleccionados");
+        lastFormSavedAt = data.getLongExtra("saveAt", System.currentTimeMillis());
+        updateLastFormTime();
     }
   }
 

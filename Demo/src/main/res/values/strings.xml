@@ -20,7 +20,7 @@
   <string name="str_mode_one">RRI&#038;ACC</string>
   <string name="str_mode_two">RRI&#038;ECG</string>
   <string name="str_mode_three">RRI</string>
-  <string name="str_start_sampling">Start Sampling_M</string>
+  <string name="str_start_sampling">START SAMPLING</string>
   <string name="str_stop_sampling">Stop Sampling</string>
   <string name="str_shut_down">Shutdown</string>
   <string name="str_selftest">Self Test</string>
